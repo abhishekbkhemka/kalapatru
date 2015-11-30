@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from LR.views import transporters,customers,forwardingNote,forwardingNotes,companies,dispatch
 
+print admin.site.urls
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'kalapatru.views.home', name='home'),
