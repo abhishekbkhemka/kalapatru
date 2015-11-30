@@ -63,12 +63,16 @@ WSGI_APPLICATION = 'kalapatru.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+	'default':{
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME' : 'kalapatru',             # Or path to database file if using sqlite3.
+		'USER' : 'root',             # Not used with sqlite3.
+		'PASSWORD' : 'root',         # Not used with sqlite3.
+		'HOST' : 'localhost',             # Set to empty string for localhost. Not used with sqlite3.
+		'PORT' : '' ,            # Set to empty string for default. Not used with sqlite3.
 
+	}
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -87,3 +91,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+if os.environ.get('PRODUCTION', None):
+    from LR.prodSettings import DATABASES as prodDB
+    DATABASES = prodDB
+
