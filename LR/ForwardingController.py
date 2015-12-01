@@ -49,14 +49,14 @@ class ForwardingController():
         if 'transporterName' in params:
             transporterName =  params['transporterName']
         if 'toDate' in params and 'fromDate' in params:
-            fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName,fnDate__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])])
+            fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName,fnDate__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('-fnDate')
             return fns
 
         if 'fromDate' in params:
-            fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName,fnDate__gte=getServerDateFromStr(params['fromDate']))
+            fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName,fnDate__gte=getServerDateFromStr(params['fromDate'])).order_by('-fnDate')
             return fns
 
-        fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName)
+        fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName).order_by('-fnDate')
         return fns
 
     def getCompanies(self,request):
