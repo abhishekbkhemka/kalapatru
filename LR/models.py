@@ -17,6 +17,10 @@ class Organization(models.Model):
     name = models.CharField(max_length=250)
     user = models.ManyToManyField(User)
 
+    def __str__(self):
+        return " %s "%(self.name)
+
+
 
 class Address(models.Model):
     addressLine1 = models.CharField(max_length=250,blank=True,null=True)
@@ -26,26 +30,34 @@ class Address(models.Model):
     state = models.CharField(max_length=250,choices=STATE,blank=True,null=True)
     country = models.CharField(max_length=250,choices=COUNTRY,blank=True,null=True)
 
+    def __str__(self):
+        return "%s ,%s ,%s -%s %s "%(self.addressLine1,self.addressLine2,self.area,self.city,self.state)
+
+
 
 class Station(Address):
     label = models.CharField(max_length=250)
     def save(self, *args, **kwargs):
         self.label = str(self.city)
         super(Station, self).save(*args, **kwargs)
+    def __str__(self):
+        return " %s "%(self.label)
 
 class Transporter(Address):
     org = models.ForeignKey(Organization)
     name = models.CharField(max_length=250)
-    contactNumber = models.IntegerField(blank=True,null=True)
+    contactNumber = models.BigIntegerField(blank=True,null=True)
     contactPerson = models.CharField(max_length=250,blank=True,null=True)
     isActive = models.BooleanField(default=True)
     label = models.CharField(max_length=255,blank=True,null=True)
     stations = models.ManyToManyField(Station)
 
     def save(self, *args, **kwargs):
-        self.label = str(self.name) + ' ' +str(self.contactNumber) + ' '+ str(self.contactPerson)
+        self.label = str(self.name) + ' ' +str(self.contactNumber) + ' of '+ str(self.contactPerson)
         super(Transporter, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return " %s "%(self.label)
 
 
 
@@ -57,18 +69,20 @@ class Consignor(Address):
     isActive = models.BooleanField(default=True)
     logo = models.ImageField(blank=True,null=True)
 
+    def __str__(self):
+        return "%s 's %s"%(self.name,self.org.name)
 
 
 
     class Meta:
-         verbose_name = "Transporters"
+         verbose_name = "Consignor"
 
 
 
 class Customer(Address):
     org = models.ForeignKey(Organization)
     name = models.CharField(max_length=250)
-    contactNumber = models.IntegerField(blank=True,null=True)
+    contactNumber = models.BigIntegerField(blank=True,null=True)
     contactPerson = models.CharField(max_length=250,blank=True,null=True)
     isActive = models.BooleanField(default=True)
     label = models.CharField(max_length=255,blank=True,null=True)
@@ -76,6 +90,9 @@ class Customer(Address):
     def save(self, *args, **kwargs):
         self.label = str(self.name) + ' ' +str(self.contactNumber) + ' '+ str(self.contactPerson)
         super(Customer, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "%s -(%s) In %s"%(self.name,self.contactNumber,self.org.name)
 
 
 class ForwardingNote(models.Model):
@@ -96,6 +113,9 @@ class ForwardingNote(models.Model):
     company  = models.CharField(max_length=250,blank=True,null=True)
     fnDate = models.DateTimeField()
 
+    def __str__(self):
+        return "Bill No-%s on date:- %s"%(self.billNo,self.billDate)
+
 
 
 class Dispatch(models.Model):
@@ -105,10 +125,17 @@ class Dispatch(models.Model):
     name = models.CharField(max_length=250,blank=True,null=True)
     remarks = models.CharField(max_length=250,blank=True,null=True)
 
+    def __str__(self):
+        return "%s is Disparch on %s"%(self.name,self.date)
+
 class Company(Address):
     org = models.ForeignKey(Organization)
     label = models.CharField(max_length=250)
     code = models.CharField(max_length=250)
+
+    def __str__(self):
+        return "%s"%(self.label)
+
 
 
 
@@ -127,3 +154,4 @@ admin.site.register(Customer)
 admin.site.register(ForwardingNote)
 admin.site.register(Dispatch)
 admin.site.register(Organization)
+# admin.site.register(Address)

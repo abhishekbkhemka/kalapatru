@@ -94,7 +94,20 @@ def dispatch(request,**args):
         return res
 
 
+@api_view(['GET'])
+def dispatches(request,**args):
+    try:
+        # return HttpResponse('result')
+        ctrl = DispatchController()
+        retData = ctrl.getDispatches(request)
+        result = DispatchSerializer(retData,many=True).data
+        return HttpResponse(JSONRenderer().render(result))
+    except Exception,e:
 
+        from rest_framework import status
+        res = HttpResponse(e)
+        res.status_code = status.HTTP_403_FORBIDDEN
+        return res
 
 
 
