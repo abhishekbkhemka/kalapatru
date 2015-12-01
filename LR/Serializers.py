@@ -30,6 +30,7 @@ class ForwardingDetailSerializer(serializers.ModelSerializer):
 
 
 class DispatchSerializer(serializers.ModelSerializer):
+    forwardingNote = ForwardingDetailSerializer(many=True)
     class Meta:
         model = Dispatch
         fields = ('id','date','vanNo','name','remarks','forwardingNote')

@@ -9,7 +9,7 @@ class DispatchController():
         ds.date = getServerDateFromStr(params['date'])
         ds.vanNo = params['vanNo']
         ds.name = params['name']
-        ds.remarks = params['remarks']
+        ds.remarks = params.get('remarks','')
         ds.save()
         for fnId in params['forwardingNotes']:
             fn = ForwardingNote.objects.get(pk=fnId)
@@ -21,11 +21,11 @@ class DispatchController():
     def getDispatches(self,request):
         params = request.query_params
         if 'toDate' in params and 'fromDate' in params:
-            dis = Dispatch.objects.filter(fnDate__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('-date')
+            dis = Dispatch.objects.filter(date__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('-date')
             return dis
 
         if 'fromDate' in params:
-            dis = Dispatch.objects.filter(fnDate__gte=getServerDateFromStr(params['fromDate'])).order_by('-date')
+            dis = Dispatch.objects.filter(date__gte=getServerDateFromStr(params['fromDate'])).order_by('-date')
             return dis
 
         dis = Dispatch.objects.all().order_by('-date')
