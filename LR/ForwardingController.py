@@ -8,11 +8,11 @@ class ForwardingController():
     def addForwardingNote(self,request):
         params = request.data;
         fn = ForwardingNote()
-        if 'billDate' in params:
-            fn.billDate = getServerDateFromStr(params['billDate'])
+        if 'billDates' in params:
+            fn.billDates = ",".join(params['billDates'])
         fn.fnDate = getServerDateFromStr(params['fnDate'])
         fn.billNo = params.get('billNo','')
-        fn.billValue = params['billValue']
+        fn.billValues = params['billValues']
         fn.cases = params['cases']
         if 'transporter_id' in params:
             fn.transporter_id = params['transporter_id']
@@ -35,7 +35,7 @@ class ForwardingController():
 
 
         fn.marka = params['marka']
-        fn.company = params['company']
+        fn.company = params.get('company','')
         fn.transporterStation = params['transporterStation']
         fn.permitNo = params.get('permitNo','')
         fn.comments = params.get('comments','')

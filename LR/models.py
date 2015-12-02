@@ -96,14 +96,14 @@ class Customer(Address):
 
 
 class ForwardingNote(models.Model):
-    billDate = models.DateTimeField(blank=True,null=True)
+    billDates = models.CharField(max_length=250,blank=True,null=True)
     transporter = models.ForeignKey(Transporter)
     transporterStation = models.CharField(max_length=250,blank=True,null=True)
     customer = models.ForeignKey(Customer)
     # customerStation = models.OneToOneField(Station)
     createdDate = models.DateTimeField(auto_now_add=True)
     billNo = models.CharField(max_length=250,blank=True,null=True)
-    billValue = models.CharField(max_length=250,blank=True,null=True)
+    billValues = models.CharField(max_length=250,blank=True,null=True)
     cases = models.CharField(max_length=250,blank=True,null=True)
     marka = models.CharField(max_length=250,blank=True,null=True)
     permitNo = models.CharField(max_length=250,blank=True,null=True)
@@ -114,7 +114,7 @@ class ForwardingNote(models.Model):
     fnDate = models.DateTimeField()
 
     def __str__(self):
-        return "Bill No-%s on date:- %s"%(self.billNo,self.billDate)
+        return "marka -%s on date:- %s"%(self.marka,self.fnDate)
 
 
 
