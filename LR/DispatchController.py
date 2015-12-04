@@ -3,6 +3,26 @@ from LR.models import Dispatch,ForwardingNote
 from LR.utils import getServerDateFromStr
 class DispatchController():
 
+    def updateDispatch(self,request):
+        params = request.data;
+        ds = Dispatch.objects.get(pk=params['id'])
+        ds.date = getServerDateFromStr(params['date'])
+        ds.vanNo = params['vanNo']
+        ds.name = params['name']
+        ds.remarks = params.get('remarks','')
+        fns = ds.forwardingNote.all()
+        for ofn in fns:
+            ofn.isDispatched = False
+            ofn.save()
+            ds.forwardingNote.remove(ofn)
+        for fnId in params['forwardingNotes']:
+            oFn = ds.forwardingNote.filter()
+            fn = ForwardingNote.objects.get(pk=fnId)
+            fn.isDispatched = True
+            fn.save()
+            ds.forwardingNote.add(fn)
+        return ds
+
     def addDispatch(self,request):
         params = request.data;
         ds = Dispatch()
@@ -18,6 +38,11 @@ class DispatchController():
             ds.forwardingNote.add(fn)
         return ds
 
+    def getDispatch(self,request):
+        dis = Dispatch.objects.get(pk=request.query_params['id'])
+        return dis
+
+
     def getDispatches(self,request):
         params = request.query_params
         if 'toDate' in params and 'fromDate' in params:
@@ -30,3 +55,5 @@ class DispatchController():
 
         dis = Dispatch.objects.all().order_by('-date')
         return dis
+
+

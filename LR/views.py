@@ -53,18 +53,19 @@ def companies(request, **arg):
         res.status_code = status.HTTP_403_FORBIDDEN
         return res
 
-@api_view(['POST'])
+@api_view(['POST','PUT'])
 def forwardingNote(request,**args):
-    try:
-        ctrl = ForwardingController()
-        retData = ctrl.addForwardingNote(request)
-        result = ForwardingSerializer(retData).data
-        return HttpResponse(JSONRenderer().render(result))
-    except Exception,e:
-        from rest_framework import status
-        res = HttpResponse(e)
-        res.status_code = status.HTTP_403_FORBIDDEN
-        return res
+    if request.method == 'POST':
+        try:
+            ctrl = ForwardingController()
+            retData = ctrl.addForwardingNote(request)
+            result = ForwardingSerializer(retData).data
+            return HttpResponse(JSONRenderer().render(result))
+        except Exception,e:
+            from rest_framework import status
+            res = HttpResponse(e)
+            res.status_code = status.HTTP_403_FORBIDDEN
+            return res
 
 @api_view(['GET'])
 def forwardingNotes(request,**args):
@@ -80,18 +81,43 @@ def forwardingNotes(request,**args):
         return res
 
 
-@api_view(['POST'])
+@api_view(['POST','GET','PUT'])
 def dispatch(request,**args):
-    try:
-        ctrl = DispatchController()
-        retData = ctrl.addDispatch(request)
-        result = DispatchSerializer(retData).data
-        return HttpResponse(JSONRenderer().render(result))
-    except Exception,e:
-        from rest_framework import status
-        res = HttpResponse(e)
-        res.status_code = status.HTTP_403_FORBIDDEN
-        return res
+    if request.method == 'POST':
+        try:
+            ctrl = DispatchController()
+            retData = ctrl.addDispatch(request)
+            result = DispatchSerializer(retData).data
+            return HttpResponse(JSONRenderer().render(result))
+        except Exception,e:
+            from rest_framework import status
+            res = HttpResponse(e)
+            res.status_code = status.HTTP_403_FORBIDDEN
+            return res
+    if request.method == 'GET':
+        try:
+            ctrl = DispatchController()
+            retData = ctrl.getDispatch(request)
+            result = DispatchSerializer(retData).data
+            return HttpResponse(JSONRenderer().render(result))
+        except Exception,e:
+            from rest_framework import status
+            res = HttpResponse(e)
+            res.status_code = status.HTTP_403_FORBIDDEN
+            return res
+
+    if request.method == 'PUT':
+        try:
+            ctrl = DispatchController()
+            retData = ctrl.updateDispatch(request)
+            result = DispatchSerializer(retData).data
+            return HttpResponse(JSONRenderer().render(result))
+        except Exception,e:
+            from rest_framework import status
+            res = HttpResponse(e)
+            res.status_code = status.HTTP_403_FORBIDDEN
+            return res
+
 
 
 @api_view(['GET'])
