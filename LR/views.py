@@ -7,6 +7,8 @@ from LR.DispatchController import DispatchController
 from django.http import HttpResponse
 from LR.Serializers import TransporterSerializer,CustomerSerializer,ForwardingSerializer,DispatchSerializer,ForwardingDetailSerializer,CompanySerializer
 from rest_framework.renderers import JSONRenderer
+from rest_framework.exceptions import PermissionDenied
+
 
 
 
@@ -25,7 +27,6 @@ def transporters(request, **arg):
         res = HttpResponse(e)
         res.status_code = status.HTTP_403_FORBIDDEN
         return res
-
 
 @api_view(['GET'])
 def customers(request, **arg):
@@ -53,19 +54,25 @@ def companies(request, **arg):
         res.status_code = status.HTTP_403_FORBIDDEN
         return res
 
-@api_view(['POST','PUT'])
+@api_view(['POST','GET'])
 def forwardingNote(request,**args):
-    if request.method == 'POST':
-        try:
+    try:
+        if request.method == 'POST':
             ctrl = ForwardingController()
             retData = ctrl.addForwardingNote(request)
             result = ForwardingSerializer(retData).data
             return HttpResponse(JSONRenderer().render(result))
-        except Exception,e:
-            from rest_framework import status
-            res = HttpResponse(e)
-            res.status_code = status.HTTP_403_FORBIDDEN
-            return res
+
+        if request.method == 'GET':
+            ctrl = ForwardingController()
+            retData = ctrl.getForwardingNote(request)
+            result = ForwardingDetailSerializer(retData).data
+            return HttpResponse(JSONRenderer().render(result))
+    except Exception,e:
+        from rest_framework import status
+        res = HttpResponse(e)
+        res.status_code = status.HTTP_403_FORBIDDEN
+        return res
 
 @api_view(['GET'])
 def forwardingNotes(request,**args):
@@ -127,6 +134,22 @@ def dispatches(request,**args):
         ctrl = DispatchController()
         retData = ctrl.getDispatches(request)
         result = DispatchSerializer(retData,many=True).data
+        return HttpResponse(JSONRenderer().render(result))
+    except Exception,e:
+
+        from rest_framework import status
+        res = HttpResponse(e)
+        res.status_code = status.HTTP_403_FORBIDDEN
+        return res
+
+
+@api_view(['GET'])
+def forwardingnote(request,**args):
+    try:
+        # return HttpResponse('result')
+        ctrl = ForwardingController()
+        retData = ctrl.getForwardingNote(request)
+        result = ForwardingSerializer(retData,many=True).data
         return HttpResponse(JSONRenderer().render(result))
     except Exception,e:
 

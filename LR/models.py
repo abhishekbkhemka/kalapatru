@@ -124,6 +124,7 @@ class Dispatch(models.Model):
     vanNo = models.CharField(max_length=250,blank=True,null=True)
     name = models.CharField(max_length=250,blank=True,null=True)
     remarks = models.CharField(max_length=250,blank=True,null=True)
+    isLocked = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s is Disparch on %s"%(self.name,self.date)

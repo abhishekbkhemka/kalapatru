@@ -1,11 +1,17 @@
 
 from LR.models import Dispatch,ForwardingNote
-from LR.utils import getServerDateFromStr
+from LR.utils import getServerDateFromStr,timeout
+from rest_framework.exceptions import PermissionDenied
 class DispatchController():
+    def lockDispatch(self,dispatch):
+        dispatch.isLocked = True
+        dispatch.save()
 
     def updateDispatch(self,request):
         params = request.data;
         ds = Dispatch.objects.get(pk=params['id'])
+        if ds.isLocked:
+            raise PermissionDenied()
         ds.date = getServerDateFromStr(params['date'])
         ds.vanNo = params['vanNo']
         ds.name = params['name']
@@ -21,6 +27,7 @@ class DispatchController():
             fn.isDispatched = True
             fn.save()
             ds.forwardingNote.add(fn)
+            # timeout(self.lockDispatch,ds,{},10)
         return ds
 
     def addDispatch(self,request):
