@@ -13,12 +13,7 @@ STATE = (
     ('BR', 'Bihar'),
 )
 
-class Organization(models.Model):
-    name = models.CharField(max_length=250)
-    user = models.ManyToManyField(User)
 
-    def __str__(self):
-        return " %s "%(self.name)
 
 
 
@@ -32,6 +27,31 @@ class Address(models.Model):
 
     def __str__(self):
         return "%s ,%s ,%s -%s %s "%(self.addressLine1,self.addressLine2,self.area,self.city,self.state)
+
+class Organization(models.Model):
+    name = models.CharField(max_length=250)
+    user = models.ManyToManyField(User)
+
+    def __str__(self):
+        return " %s "%(self.name)
+
+class Company(Address):
+    org = models.ForeignKey(Organization)
+    name = models.CharField(max_length=250)
+    code = models.CharField(max_length=250)
+
+    def __str__(self):
+        return "%s"%(self.name)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -110,7 +130,7 @@ class ForwardingNote(models.Model):
     consignor = models.ForeignKey(Consignor,blank=True,null=True)
     comments =models.CharField(max_length=250,blank=True,null=True)
     isDispatched = models.BooleanField(default=False)
-    company  = models.CharField(max_length=250,blank=True,null=True)
+    company  = models.ForeignKey(Company,blank=True,null=True)
     fnDate = models.DateTimeField()
 
     def __str__(self):
@@ -129,22 +149,6 @@ class Dispatch(models.Model):
     def __str__(self):
         return "%s is Disparch on %s"%(self.name,self.date)
 
-class Company(Address):
-    org = models.ForeignKey(Organization)
-    label = models.CharField(max_length=250)
-    code = models.CharField(max_length=250)
-
-    def __str__(self):
-        return "%s"%(self.label)
-
-
-
-
-
-
-
-
-
 
 
 
@@ -155,4 +159,5 @@ admin.site.register(Customer)
 admin.site.register(ForwardingNote)
 admin.site.register(Dispatch)
 admin.site.register(Organization)
+admin.site.register(Company)
 # admin.site.register(Address)

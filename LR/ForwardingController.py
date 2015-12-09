@@ -35,7 +35,8 @@ class ForwardingController():
 
 
         fn.marka = params['marka']
-        fn.company = params.get('company','')
+        if 'companyId' in params:
+            fn.company_id = params['companyId']
         fn.transporterStation = params['transporterStation']
         fn.permitNo = params.get('permitNo','')
         fn.comments = params.get('comments','')

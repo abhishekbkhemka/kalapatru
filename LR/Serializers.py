@@ -10,6 +10,13 @@ class TransporterSerializer(serializers.ModelSerializer):
         fields = ('stations','label','id','name','contactNumber','contactPerson','isActive','addressLine1','addressLine2','area','city','state','country')
         depth = 1
 
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('id','name','code','addressLine1','addressLine2','area','city','state','country')
+
+
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
@@ -17,16 +24,18 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class ForwardingSerializer(serializers.ModelSerializer):
+    company =CompanySerializer()
     class Meta:
         model = ForwardingNote
-        fields = ('id','billDates','transporter','customer','createdDate','billNo','billValues','cases','marka','permitNo','consignor','comments','isDispatched')
+        fields = ('company','id','billDates','transporter','customer','createdDate','billNo','billValues','cases','marka','permitNo','consignor','comments','isDispatched')
 
 class ForwardingDetailSerializer(serializers.ModelSerializer):
     transporter = TransporterSerializer()
     customer = CustomerSerializer()
+    company =CompanySerializer()
     class Meta:
         model = ForwardingNote
-        fields = ('fnDate','id','billDates','transporter','customer','createdDate','billNo','billValues','cases','marka','permitNo','consignor','comments','isDispatched')
+        fields = ('company','fnDate','id','billDates','transporter','customer','createdDate','billNo','billValues','cases','marka','permitNo','consignor','comments','isDispatched')
 
 
 class DispatchSerializer(serializers.ModelSerializer):
@@ -34,10 +43,3 @@ class DispatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dispatch
         fields = ('id','date','vanNo','name','remarks','forwardingNote','isLocked')
-
-
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = ('id','label','code')
-
