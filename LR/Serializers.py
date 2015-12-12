@@ -3,7 +3,7 @@ from LR.models import Transporter,Customer,ForwardingNote,Dispatch,Station,Compa
 class CommoditySeializers(serializers.ModelSerializer):
     class Meta:
         model = Commodity
-        fields = ('name')
+        fields = ('name','label')
 
 class StationsSeializers(serializers.ModelSerializer):
     class Meta:
