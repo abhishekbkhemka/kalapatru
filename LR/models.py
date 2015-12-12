@@ -128,7 +128,7 @@ class ForwardingNote(models.Model):
     marka = models.CharField(max_length=250,blank=True,null=True)
     permitNo = models.CharField(max_length=250,blank=True,null=True)
     consignor = models.ForeignKey(Consignor,blank=True,null=True)
-    comments =models.CharField(max_length=250,blank=True,null=True)
+    commodity =models.CharField(max_length=250,blank=True,null=True)
     isDispatched = models.BooleanField(default=False)
     company  = models.ForeignKey(Company,blank=True,null=True)
     fnDate = models.DateTimeField()
@@ -148,6 +148,17 @@ class Dispatch(models.Model):
 
     def __str__(self):
         return "%s is Disparch on %s"%(self.name,self.date)
+
+
+
+class Commodity(models.Model):
+    label = models.CharField(max_length=250,blank=True,null=True)
+    name = models.CharField(max_length=250)
+    def save(self, *args, **kwargs):
+        super(Commodity, self).save(*args, **kwargs)
+    def __str__(self):
+        return " %s "%(self.name)
+
 
 
 

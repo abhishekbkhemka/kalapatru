@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from LR.models import Transporter,Customer,ForwardingNote,Dispatch,Station,Company
+from LR.models import Transporter,Customer,ForwardingNote,Dispatch,Station,Company,Commodity
+class CommoditySeializers(serializers.ModelSerializer):
+    class Meta:
+        model = Commodity
+        fields = ('name')
+
 class StationsSeializers(serializers.ModelSerializer):
     class Meta:
         model = Station

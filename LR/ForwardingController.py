@@ -1,5 +1,5 @@
 
-from LR.models import ForwardingNote,Transporter,Customer,Company
+from LR.models import ForwardingNote,Transporter,Customer,Company,Commodity
 from LR.utils import getServerDateFromStr
 import datetime
 
@@ -39,7 +39,7 @@ class ForwardingController():
             fn.company_id = params['companyId']
         fn.transporterStation = params['transporterStation']
         fn.permitNo = params.get('permitNo','')
-        fn.comments = params.get('comments','')
+        fn.commodity = params.get('commodity','')
 
         fn.save()
         return fn
@@ -66,10 +66,13 @@ class ForwardingController():
         fns = ForwardingNote.objects.get(pk=params['id'])
         return fns
 
-    def getCompanies(self,request):
+    def getSettings(self,request):
         params = request.query_params
         companies = Company.objects.filter(org_id=1)
-        return companies
+        commodity = Commodity.objects.filter()
+
+        return companies,commodity
+
 
 
 

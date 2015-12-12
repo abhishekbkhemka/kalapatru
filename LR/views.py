@@ -5,7 +5,7 @@ from LR.CustomerCtl import CustomerController
 from LR.ForwardingController import ForwardingController
 from LR.DispatchController import DispatchController
 from django.http import HttpResponse
-from LR.Serializers import TransporterSerializer,CustomerSerializer,ForwardingSerializer,DispatchSerializer,ForwardingDetailSerializer,CompanySerializer
+from LR.Serializers import TransporterSerializer,CustomerSerializer,ForwardingSerializer,DispatchSerializer,ForwardingDetailSerializer,CompanySerializer,CommoditySeializers
 from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import PermissionDenied
 
@@ -42,11 +42,15 @@ def customers(request, **arg):
         return res
 
 @api_view(['GET'])
-def companies(request, **arg):
+def settings(request, **arg):
     try:
         ctrl = ForwardingController()
-        retData = ctrl.getCompanies(request)
-        result = CompanySerializer(retData,many=True).data
+        companies,commodity = ctrl.getSettings(request)
+        companies = CompanySerializer(companies,many=True).data
+        commodity = CommoditySeializers(commodity,many=True).data
+        result = {}
+        result['companies'] = companies
+        result['commodities'] = commodity
         return HttpResponse(JSONRenderer().render(result))
     except Exception,e:
         from rest_framework import status
