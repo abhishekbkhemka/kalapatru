@@ -39,6 +39,8 @@ class Company(Address):
     org = models.ForeignKey(Organization)
     name = models.CharField(max_length=250)
     code = models.CharField(max_length=250)
+    vat = models.CharField(max_length=250,default=True,null=True)
+    cst_or_tin = models.CharField(max_length=250,default=True,null=True)
 
     def __str__(self):
         return "%s"%(self.name)
