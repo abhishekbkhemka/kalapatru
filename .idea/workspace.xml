@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4d8c6b4-7475-4d5d-9862-4fbdc6c07a75" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LR/ForwardingController.py" afterPath="$PROJECT_DIR$/LR/ForwardingController.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LR/Serializers.py" afterPath="$PROJECT_DIR$/LR/Serializers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LR/models.py" afterPath="$PROJECT_DIR$/LR/models.py" />
     </list>
     <ignored path="kalapatru.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -106,8 +105,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LR/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.85087717">
-              <caret line="126" column="6" selection-start-line="126" selection-start-column="6" selection-end-line="126" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.42105263">
+              <caret line="155" column="47" selection-start-line="155" selection-start-column="47" selection-end-line="155" selection-end-column="47" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -134,11 +133,11 @@
         <option value="$PROJECT_DIR$/LR/migrations/0022_auto_20151209_1343.py" />
         <option value="$PROJECT_DIR$/LR/views.py" />
         <option value="$PROJECT_DIR$/kalapatru/urls.py" />
-        <option value="$PROJECT_DIR$/LR/models.py" />
         <option value="$PROJECT_DIR$/LR/DispatchController.py" />
         <option value="$PROJECT_DIR$/LR/prodSettings.py" />
         <option value="$PROJECT_DIR$/LR/ForwardingController.py" />
         <option value="$PROJECT_DIR$/LR/Serializers.py" />
+        <option value="$PROJECT_DIR$/LR/models.py" />
       </list>
     </option>
   </component>
@@ -985,8 +984,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LR/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.85087717">
-          <caret line="126" column="6" selection-start-line="126" selection-start-column="6" selection-end-line="126" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.42105263">
+          <caret line="155" column="47" selection-start-line="155" selection-start-column="47" selection-end-line="155" selection-end-column="47" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
