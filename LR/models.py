@@ -128,7 +128,7 @@ class ForwardingNote(models.Model):
     billDates = models.CharField(max_length=250,blank=True,null=True)
     transporter = models.ForeignKey(Transporter)
     transporterStation = models.CharField(max_length=250,blank=True,null=True)
-    customer = models.ForeignKey(Customer)
+    customer = models.ForeignKey(Customer,blank=True,null=True)
     # customerStation = models.OneToOneField(Station)
     createdDate = models.DateTimeField(auto_now_add=True)
     billNo = models.CharField(max_length=250,blank=True,null=True)
