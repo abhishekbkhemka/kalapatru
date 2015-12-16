@@ -53,14 +53,14 @@ class DispatchController():
     def getDispatches(self,request):
         params = request.query_params
         if 'toDate' in params and 'fromDate' in params:
-            dis = Dispatch.objects.filter(date__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('-date')
+            dis = Dispatch.objects.filter(date__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('forwardingNote')
             return dis
 
         if 'fromDate' in params:
-            dis = Dispatch.objects.filter(date__gte=getServerDateFromStr(params['fromDate'])).order_by('-date')
+            dis = Dispatch.objects.filter(date__gte=getServerDateFromStr(params['fromDate'])).order_by('forwardingNote')
             return dis
 
-        dis = Dispatch.objects.all().order_by('-date')
+        dis = Dispatch.objects.all().order_by('forwardingNote')
         return dis
 
 

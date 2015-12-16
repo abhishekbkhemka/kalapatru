@@ -101,13 +101,20 @@ class Consignor(Address):
 
 
 
-class Customer(Address):
+class Customer(models.Model):
     org = models.ForeignKey(Organization)
     name = models.CharField(max_length=250)
     contactNumber = models.BigIntegerField(blank=True,null=True)
     contactPerson = models.CharField(max_length=250,blank=True,null=True)
+    tin = models.CharField(max_length=250,blank=True,null=True)
     isActive = models.BooleanField(default=True)
     label = models.CharField(max_length=255,blank=True,null=True)
+    addressLine1 = models.CharField(max_length=250,blank=True,null=True)
+    addressLine2 = models.CharField(max_length=250,blank=True,null=True)
+    area = models.CharField(max_length=250,blank=True,null=True)
+    city = models.CharField(max_length=250,blank=True,null=True)
+    state = models.CharField(max_length=250,choices=STATE,blank=True,null=True)
+    country = models.CharField(max_length=250,choices=COUNTRY,blank=True,null=True)
 
     def save(self, *args, **kwargs):
         self.label = str(self.name) + ' ' +str(self.contactNumber) + ' '+ str(self.contactPerson)
