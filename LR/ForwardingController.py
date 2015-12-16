@@ -26,11 +26,14 @@ class ForwardingController():
         if 'customer_id' in params:
             fn.customer_id = params['customer_id']
         else:
-            customer = Customer()
-            customer.name = params['customer']['name']
-            customer.city = params['customer']['city']
-            customer.org_id =1
-            customer.save()
+            try:
+                customer = Customer.objects.get(name__iexact=params['customer']['name'],city__iexact=params['customer']['city'])
+            except Customer.DoesNotExist:
+                customer = Customer()
+                customer.name = params['customer']['name']
+                customer.city = params['customer']['city']
+                customer.org_id =1
+                customer.save()
             fn.customer_id = customer.id
 
 
