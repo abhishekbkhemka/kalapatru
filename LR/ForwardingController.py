@@ -53,14 +53,14 @@ class ForwardingController():
         if 'transporterName' in params:
             transporterName =  params['transporterName']
         if 'toDate' in params and 'fromDate' in params:
-            fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName,fnDate__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('isDispatched','-fnDate')
+            fns = ForwardingNote.objects.filter(isDispatched=False,transporter__name__icontains=transporterName,fnDate__range=[getServerDateFromStr(params['fromDate']),getServerDateFromStr(params['toDate'])]).order_by('-id')
             return fns
 
         if 'fromDate' in params:
-            fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName,fnDate__gte=getServerDateFromStr(params['fromDate'])).order_by('isDispatched','-fnDate')
+            fns = ForwardingNote.objects.filter(isDispatched=False,transporter__name__icontains=transporterName,fnDate__gte=getServerDateFromStr(params['fromDate'])).order_by('-id')
             return fns
 
-        fns = ForwardingNote.objects.filter(transporter__name__icontains=transporterName).order_by('isDispatched','-fnDate')
+        fns = ForwardingNote.objects.filter(isDispatched=False,transporter__name__icontains=transporterName).order_by('-id')
         return fns
 
 

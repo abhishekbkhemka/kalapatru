@@ -75,7 +75,7 @@ class Transporter(Address):
     stations = models.ManyToManyField(Station)
 
     def save(self, *args, **kwargs):
-        self.label = str(self.name) + ' ' +str(self.contactNumber) + ' of '+ str(self.contactPerson)
+        self.label = str(self.name)
         super(Transporter, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -143,7 +143,7 @@ class ForwardingNote(models.Model):
     fnDate = models.DateTimeField()
 
     def __str__(self):
-        return "marka -%s on date:- %s"%(self.marka,self.fnDate)
+        return "%s -marka -%s on date:- %s"%(self.id,self.marka,self.fnDate)
 
 
 
