@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from LR.models import Transporter,Customer,ForwardingNote,Dispatch,Station,Company,Commodity
+
 class CommoditySeializers(serializers.ModelSerializer):
     class Meta:
         model = Commodity
