@@ -9,7 +9,7 @@ class CommoditySeializers(serializers.ModelSerializer):
 class StationsSeializers(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ('label')
+        fields = ('label',)
 class TransporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transporter
