@@ -14,15 +14,17 @@ class ForwardingController():
         fn.billNo = params.get('billNo','')
         fn.billValues = params['billValues']
         fn.cases = params['cases']
-        if 'transporter_id' in params:
-            fn.transporter_id = params['transporter_id']
-        else:
-            transporter = Transporter()
-            transporter.name = params['transporter']['name']
-            transporter.city = params['transporterStation']
-            transporter.org_id = 1
-            transporter.save()
-            fn.transporter_id = transporter.id
+        fn.transporter_id = params['transporter_id']
+        fn.transporterStation = params['transporterStation']
+        # if 'transporter_id' in params:
+        #     pass
+        # else:
+        #     transporter = Transporter()
+        #     transporter.name = params['transporter']['name']
+        #     transporter.city = params['transporterStation']
+        #     transporter.org_id = 1
+        #     transporter.save()
+        #     fn.transporter_id = transporter.id
         if 'customer_id' in params:
             fn.customer_id = params['customer_id']
         else:
@@ -71,9 +73,9 @@ class ForwardingController():
 
     def getSettings(self,request):
         params = request.query_params
-        companies = Company.objects.filter(org_id=1)
-        commodity = Commodity.objects.filter()
-        stations = Station.objects.filter()
+        companies = Company.objects.filter(org_id=1).order_by('name')
+        commodity = Commodity.objects.filter().order_by('name')
+        stations = Station.objects.filter().order_by('label')
 
         return companies,commodity,stations
 
