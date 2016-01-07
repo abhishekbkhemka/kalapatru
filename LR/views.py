@@ -8,13 +8,13 @@ from django.http import HttpResponse
 from LR.Serializers import TransporterSerializer,StationsSeializers,CustomerSerializer,ForwardingSerializer,DispatchSerializer,ForwardingDetailSerializer,CompanySerializer,CommoditySeializers
 from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import PermissionDenied
-
-
+from permissionDecorator import *
+from constants import *
 
 
 
 # Create your views here.
-
+@permitted_actions([GET,],FORWARDINGNOTE)
 @api_view(['GET'])
 def transporters(request, **arg):
     try:
@@ -28,6 +28,9 @@ def transporters(request, **arg):
         res.status_code = status.HTTP_403_FORBIDDEN
         return res
 
+
+
+# @permitted_actions([GET,],CUSTOMER)
 @api_view(['GET'])
 def customers(request, **arg):
     try:
@@ -40,6 +43,7 @@ def customers(request, **arg):
         res = HttpResponse(e)
         res.status_code = status.HTTP_403_FORBIDDEN
         return res
+
 
 @api_view(['GET'])
 def settings(request, **arg):
