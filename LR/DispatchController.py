@@ -54,7 +54,7 @@ class DispatchController():
 
     def getVans(self):
         cursor = connection.cursor()
-        query = "SELECT vanNo,name,CONCAT(vanNo, ' ', name) as label FROM kalapatru.LR_dispatch group by vanNo"
+        query = "SELECT vanNo,name,CONCAT(vanNo, ' ', name) as label FROM LR_dispatch group by vanNo"
         cursor.execute(query)
         retData  =  dictfetchall(cursor)
         return retData
