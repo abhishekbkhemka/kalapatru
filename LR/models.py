@@ -74,6 +74,10 @@ class Transporter(Address):
     label = models.CharField(max_length=255,blank=True,null=True)
     stations = models.ManyToManyField(Station)
 
+    class Meta:
+         verbose_name = "Consignor"
+         ordering = ('name',)
+
     def save(self, *args, **kwargs):
         self.label = str(self.name)
         super(Transporter, self).save(*args, **kwargs)
@@ -98,6 +102,7 @@ class Consignor(Address):
 
     class Meta:
          verbose_name = "Consignor"
+         ordering = ('name',)
 
 
 
@@ -115,6 +120,10 @@ class Customer(models.Model):
     city = models.CharField(max_length=250,blank=True,null=True)
     state = models.CharField(max_length=250,choices=STATE,blank=True,null=True)
     country = models.CharField(max_length=250,choices=COUNTRY,blank=True,null=True)
+
+    class Meta:
+         verbose_name = "Customers"
+         ordering = ('name',)
 
     def save(self, *args, **kwargs):
         self.label = str(self.name) + ' ' +str(self.contactNumber) + ' '+ str(self.contactPerson)

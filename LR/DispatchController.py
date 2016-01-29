@@ -2,6 +2,9 @@
 from LR.models import Dispatch,ForwardingNote
 from LR.utils import getServerDateFromStr,timeout
 from rest_framework.exceptions import PermissionDenied
+from django.db import connection
+from utils import dictfetchall
+
 class DispatchController():
     def lockDispatch(self,dispatch):
         dispatch.isLocked = True
@@ -48,6 +51,14 @@ class DispatchController():
     def getDispatch(self,request):
         dis = Dispatch.objects.get(pk=request.query_params['id'])
         return dis
+
+    def getVans(self):
+        cursor = connection.cursor()
+        query = "SELECT vanNo,name,CONCAT(vanNo, ' ', name) as label FROM kalapatru.LR_dispatch group by vanNo"
+        cursor.execute(query)
+        retData  =  dictfetchall(cursor)
+        return retData
+
 
 
     def getDispatches(self,request):

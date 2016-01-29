@@ -148,6 +148,20 @@ def dispatches(request,**args):
         res.status_code = status.HTTP_403_FORBIDDEN
         return res
 
+@api_view(['GET'])
+def vans(request,**args):
+    try:
+        # return HttpResponse('result')
+        ctrl = DispatchController()
+        retData = ctrl.getVans()
+        return HttpResponse(JSONRenderer().render(retData))
+    except Exception,e:
+
+        from rest_framework import status
+        res = HttpResponse(e)
+        res.status_code = status.HTTP_403_FORBIDDEN
+        return res
+
 
 @api_view(['GET'])
 def forwardingnote(request,**args):

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from LR.views import transporters,customers,forwardingNote,forwardingNotes,settings,dispatch,dispatches
+from LR.views import transporters,customers,forwardingNote,forwardingNotes,settings,dispatch,dispatches,vans
 
 print admin.site.urls
 urlpatterns = patterns('',
@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^api/forwardingNotes/$', forwardingNotes),
     url(r'^api/dispatch/$', dispatch),
     url(r'^api/dispatches/$', dispatches),
+    url(r'^api/vans/$', vans),
 
 )
