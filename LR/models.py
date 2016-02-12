@@ -90,7 +90,7 @@ class Transporter(Address):
 class Consignor(Address):
     org = models.ForeignKey(Organization)
     name = models.CharField(max_length=250)
-    contactNumber = models.IntegerField()
+    contactNumber = models.BigIntegerField()
     contactPerson = models.CharField(max_length=250,blank=True,null=True)
     isActive = models.BooleanField(default=True)
     logo = models.ImageField(blank=True,null=True)

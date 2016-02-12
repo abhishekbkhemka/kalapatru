@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'LR',
     'corsheaders',
+    'model_report',
+    'app',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,7 +67,7 @@ WSGI_APPLICATION = 'kalapatru.wsgi.application'
 DATABASES = {
 	'default':{
 		'ENGINE': 'django.db.backends.mysql',
-		'NAME' : 'kalapatru',             # Or path to database file if using sqlite3.
+		'NAME' : 'kalptaru1',             # Or path to database file if using sqlite3.
 		'USER' : 'root',             # Not used with sqlite3.
 		'PASSWORD' : 'root',         # Not used with sqlite3.
 		'HOST' : 'localhost',             # Set to empty string for localhost. Not used with sqlite3.
@@ -89,9 +91,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
+from os.path import abspath, dirname, basename, join
+import sys
 
+PROJECT_ABSOLUTE_DIR = dirname(abspath(__file__))
+PROJECT_NAME = basename(PROJECT_ABSOLUTE_DIR)
+TEMPLATE_DIRS = [('/home/ganesh/kalapatru/templates')]
+print ">>>>>>>>>>>>>>>>>>>>>>>>",TEMPLATE_DIRS
+MEDIA_ROOT = PROJECT_ABSOLUTE_DIR + '/media/'
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = PROJECT_ABSOLUTE_DIR + '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     '/usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/',
@@ -100,7 +111,7 @@ STATICFILES_DIRS = (
 if os.environ.get('PRODUCTION', None):
     from LR.prodSettings import DATABASES as prodDB
     DATABASES = prodDB
-    STATIC_ROOT ='/usr/local/lib/python2.7/dist-packages/django/contrib/admin/'    
+    STATIC_ROOT ='/usr/local/lib/python2.7/dist-packages/django/contrib/admin/'
 
 
 
