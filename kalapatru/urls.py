@@ -25,5 +25,5 @@ urlpatterns = patterns('',
     url(r'^api/dispatch/$', dispatch),
     url(r'^api/dispatches/$', dispatches),
     url(r'^api/vans/$', vans),
-    url(r'^report', include('model_report.urls')),
+    url(r'^report/', include('model_report.urls')),
 )
