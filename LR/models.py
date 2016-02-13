@@ -68,7 +68,7 @@ class Station(Address):
 class Transporter(Address):
     org = models.ForeignKey(Organization)
     name = models.CharField(max_length=250)
-    contactNumber = models.BigIntegerField(blank=True,null=True)
+    contactNumber = models.CharField(max_length=250,blank=True,null=True)
     contactPerson = models.CharField(max_length=250,blank=True,null=True)
     isActive = models.BooleanField(default=True)
     label = models.CharField(max_length=255,blank=True,null=True)

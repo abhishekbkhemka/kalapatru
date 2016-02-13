@@ -10,8 +10,19 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+import dj_database_url
+from os.path import join
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+SITE_ROOT = os.path.abspath(os.path.dirname(__name__))
+print SITE_ROOT
+try:
+    from dotenv import load_dotenv
+    dotenv_path=join(SITE_ROOT,'.env')
+    load_dotenv(dotenv_path)
+except Exception,e:
+    print e
+    pass
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -59,22 +70,13 @@ CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'kalapatru.urls'
 
 WSGI_APPLICATION = 'kalapatru.wsgi.application'
-
+DATABASES_URL = 'mysql://roooooot:roooooot@localhost:3306/kalpatru'
+DATABASES =  {'default': dj_database_url.parse(os.environ.get('DATABASES_URL',DATABASES_URL))}
+print os.environ.get('DATABASES_URL','------------------')
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-	'default':{
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME' : 'kalptaru1',             # Or path to database file if using sqlite3.
-		'USER' : 'root',             # Not used with sqlite3.
-		'PASSWORD' : 'root',         # Not used with sqlite3.
-		'HOST' : 'localhost',             # Set to empty string for localhost. Not used with sqlite3.
-		'PORT' : '' ,            # Set to empty string for default. Not used with sqlite3.
-
-	}
-}
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -96,7 +98,7 @@ import sys
 
 PROJECT_ABSOLUTE_DIR = dirname(abspath(__file__))
 PROJECT_NAME = basename(PROJECT_ABSOLUTE_DIR)
-TEMPLATE_DIRS = [('/home/ganesh/kalapatru/templates')]
+TEMPLATE_DIRS = [(SITE_ROOT+'/templates')]
 print ">>>>>>>>>>>>>>>>>>>>>>>>",TEMPLATE_DIRS
 MEDIA_ROOT = PROJECT_ABSOLUTE_DIR + '/media/'
 
@@ -110,7 +112,6 @@ STATICFILES_DIRS = (
 
 if os.environ.get('PRODUCTION', None):
     from LR.prodSettings import DATABASES as prodDB
-    DATABASES = prodDB
     STATIC_ROOT ='/usr/local/lib/python2.7/dist-packages/django/contrib/admin/'
 
 
@@ -119,3 +120,4 @@ if os.environ.get('PRODUCTION', None):
 
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+DEBUG=True

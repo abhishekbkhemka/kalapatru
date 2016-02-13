@@ -14,7 +14,7 @@ from constants import *
 
 
 # Create your views here.
-@permitted_actions([GET,],FORWARDINGNOTE)
+#@permitted_actions([GET,],FORWARDINGNOTE)
 @api_view(['GET'])
 def transporters(request, **arg):
     try:
