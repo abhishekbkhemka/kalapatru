@@ -73,6 +73,14 @@ class ForwardingNote(ReportAdmin):
 
 reports.register('ForwardingNote', ForwardingNote)
 
+import datetime
+def forwardingNote__fnDate(value, instance):
+    res = 'NA'
+    if len(value)>0:
+        res = value[0].strftime("%d-%m-%y")
+    return _(res)
+
+
 
 class Dispatch(ReportAdmin):
     model = Dispatch
@@ -86,7 +94,7 @@ class Dispatch(ReportAdmin):
         'isLocked',
     ]
 
-    list_group_by = ('date' )
+    list_group_by = ('date','forwardingNote','vanNo' )
     list_filter = ('date','forwardingNote','vanNo','name','remarks','isLocked',)
     type = 'report'
     override_field_labels = {
@@ -94,6 +102,10 @@ class Dispatch(ReportAdmin):
         'forwardingNote__fnDate':'forwardingNote FN Date',
 
     }
+    override_field_formats = {
+
+                'forwardingNote__fnDate': forwardingNote__fnDate,
+            }
 
 reports.register('Dispatch', Dispatch)
 
