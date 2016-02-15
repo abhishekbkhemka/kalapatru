@@ -51,6 +51,7 @@ class ForwardingNote(ReportAdmin):
         'commodity',
         'isDispatched',
         'company',
+        'company__name',
         'fnDate',
         'transporter',
 
@@ -66,9 +67,43 @@ class ForwardingNote(ReportAdmin):
         'transporter__contactNumber':'Transporter Contact Number',
         'transporter__name':'Transporter Name',
         'transporter':'TransporterId',
+        'company__name':'Company Name',
+        'company':'CompanyId'
     }
 
 reports.register('ForwardingNote', ForwardingNote)
+
+
+class Dispatch(ReportAdmin):
+    model = Dispatch
+    fields = [
+        'date',
+        'forwardingNote',
+        'forwardingNote__fnDate',
+        'vanNo',
+        'name',
+        'remarks',
+        'isLocked',
+    ]
+
+    list_group_by = ('date' )
+    list_filter = ('date','forwardingNote','vanNo','name','remarks','isLocked',)
+    type = 'report'
+    override_field_labels = {
+        'forwardingNote':'forwardingNoteId',
+        'forwardingNote__fnDate':'forwardingNote FN Date',
+
+    }
+
+reports.register('Dispatch', Dispatch)
+
+
+
+
+
+
+
+
 
 
 
