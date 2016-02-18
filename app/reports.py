@@ -41,6 +41,7 @@ class ForwardingNote(ReportAdmin):
         'transporter__contactNumber',
         'transporterStation',
         'customer',
+        'customer__name',
         'createdDate',
         'billNo',
         'billValues',
@@ -68,7 +69,9 @@ class ForwardingNote(ReportAdmin):
         'transporter__name':'Transporter Name',
         'transporter':'TransporterId',
         'company__name':'Company Name',
-        'company':'CompanyId'
+        'company':'CompanyId',
+        'customer':'CustomerId',
+        'customer__name':'Customer Name',
     }
 
 reports.register('ForwardingNote', ForwardingNote)
@@ -80,6 +83,12 @@ def forwardingNote__fnDate(value, instance):
         res = value[0].strftime("%d-%m-%y")
     return _(res)
 
+def forwardingNote__company__name(value, instance):
+    res = 'NA'
+    if len(value)>0:
+        res = str(value[0]).title()
+    return _(res)
+
 
 
 class Dispatch(ReportAdmin):
@@ -88,6 +97,7 @@ class Dispatch(ReportAdmin):
         'date',
         'forwardingNote',
         'forwardingNote__fnDate',
+        'forwardingNote__company__name',
         'vanNo',
         'name',
         'remarks',
@@ -100,11 +110,13 @@ class Dispatch(ReportAdmin):
     override_field_labels = {
         'forwardingNote':'forwardingNoteId',
         'forwardingNote__fnDate':'forwardingNote FN Date',
+        'forwardingNote__company__name':'Company Name'
 
     }
     override_field_formats = {
 
                 'forwardingNote__fnDate': forwardingNote__fnDate,
+                'forwardingNote__company__name':forwardingNote__company__name
             }
 
 reports.register('Dispatch', Dispatch)

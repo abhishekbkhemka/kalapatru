@@ -167,6 +167,9 @@ class Dispatch(models.Model):
     def __str__(self):
         return "%s is Disparch on %s"%(self.name,self.date)
 
+    class Meta:
+         verbose_name = "Dispatche"
+
 
 
 class Commodity(models.Model):
