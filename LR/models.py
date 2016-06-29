@@ -73,7 +73,7 @@ class Transporter(Address):
     isActive = models.BooleanField(default=True)
     label = models.CharField(max_length=255,blank=True,null=True)
     stations = models.ManyToManyField(Station)
-    isActive=models.BooleanField(default=False)
+    isActive=models.BooleanField(default=True)
 
     class Meta:
          verbose_name = "Consignor"
