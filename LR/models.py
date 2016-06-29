@@ -73,6 +73,7 @@ class Transporter(Address):
     isActive = models.BooleanField(default=True)
     label = models.CharField(max_length=255,blank=True,null=True)
     stations = models.ManyToManyField(Station)
+    isActive=models.BooleanField(default=True)
 
     class Meta:
          verbose_name = "Consignor"
@@ -154,6 +155,11 @@ class ForwardingNote(models.Model):
     def __str__(self):
         return "%s -marka -%s on date:- %s"%(self.id,self.marka,self.fnDate)
 
+    # def get(self, *args, **kwargs):
+    #     if request.user == self.person:
+    #         super(ForwardingNote, self).get(*args, **kwargs)
+    #     else:
+    #         return none
 
 
 class Dispatch(models.Model):

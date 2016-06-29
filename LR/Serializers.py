@@ -17,6 +17,7 @@ class TransporterSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
