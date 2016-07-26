@@ -5,7 +5,7 @@ from app.models import OS, Population, Browser, BrowserDownload, ResolutionByYea
 from model_report.report import reports, ReportAdmin
 from model_report.utils import (usd_format, avg_column, sum_column, count_column,less_than_column)
 from LR.models import *
-
+from stock.models import Stock
 
 # class OrganizationList(ReportAdmin):
 #     model = Organization
@@ -122,11 +122,39 @@ class Dispatch(ReportAdmin):
 reports.register('Dispatch', Dispatch)
 
 
+# -------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>
+class Stock(ReportAdmin):
+    model = Stock
+    fields = [
+        'type',
+        'company_Name',
+        'supply_Place',
+        'bill_No',
+        'bill_Date',
+        'bill_Rec_Date',
+        'bill_Amount',
+        'lr_No',
+        'lr_Date',
+        'cases',
+        'carriers_Name',
+        'permit_No',
+        'doc_Month',
+        'F_C_O',
+        'date',
+        'qrt',
+        'year',
+        'remarks',
+        'commodity',
+    ]
+
+    # list_group_by = ('date','forwardingNote','vanNo' )
+    list_filter = ('type','company_Name','supply_Place','date','remarks','bill_Date',)
+
+reports.register('Stock', Stock)
 
 
 
-
-
+#----------->>>>>>>>>>>
 
 
 

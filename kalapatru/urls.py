@@ -3,6 +3,8 @@ from django.contrib import admin
 from LR.views import transporters,customers,forwardingNote,forwardingNotes,settings,dispatch,dispatches,vans
 from model_report.urls import *
 from model_report import report
+from stock.views import stock
+
 report.autodiscover()
 admin.autodiscover()
 
@@ -26,4 +28,5 @@ urlpatterns = patterns('',
     url(r'^api/dispatches/$', dispatches),
     url(r'^api/vans/$', vans),
     url(r'^report/', include('model_report.urls')),
+    url(r'^stock/', stock),
 )
