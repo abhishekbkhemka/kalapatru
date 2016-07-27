@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from forms import StockForm
+#from forms import StockForm
 from django.contrib.auth.decorators import login_required
 from models import Stock
 from django.contrib import admin
