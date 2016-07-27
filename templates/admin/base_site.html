@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Meddna Admin</a></h1>
+{% endblock %}
+<script>
+	var urlmenu = document.getElementById('menu1');
+	urlmenu.onchange = function() {
+	location.href = $("#menu1 option:selected").val();
+};
+</script>
+{% block customLinks %}
+
+
+    <select name="menu1" id="menu1">
+        <option >---------</option>
+        <option value="/stock">Add Stock</option>
+
+
+
+    </select>
+<script type="text/javascript">
+     var urlmenu = document.getElementById( 'menu1' );
+     urlmenu.onchange = function() {
+          window.open( this.options[ this.selectedIndex ].value, '_self');
+     };
+    </script>
+
+{% endblock %}
+
+{% block nav-global %}
+
+{% endblock %}

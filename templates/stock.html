@@ -1,36 +1,493 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us" >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<title>Change stock | Django site admin</title>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/static/admin/css/ie.css" /><![endif]-->
+
+<script type="text/javascript">window.__admin_media_prefix__ = "/static/admin/";</script>
+<script type="text/javascript">window.__admin_utc_offset__ = "0";</script>
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+
+    <script>
+        function funckDate(id)
+        {
+            var monthDict={'01':"Jan",'02':"Feb",'03':"Mar",'04':"Apr",'05':"May",'06':"Jun",'07':"Jul",'08':"Aug",'09':"Sept",'10':"Oct",'11':"Nov",'12':"Dec"}
+            var value=document.getElementById(id).value;
+            var dateArray=value.split('-')
+            var year=dateArray[0]
+            var month=dateArray[1]
+            var day=dateArray[2]
+            document.getElementById('id_doc_Month').value=monthDict[month]+" "+year;
+            document.getElementById('id_year').value=year;
+            return false;
+
+        }
+        function hideme(id)
+        {
+            document.getElementById(id).style.display='none';
+            return false;
+        }
+    </script>
 </head>
-<body>
 
-<table>
-    <tr>
-        <th>Type</th>
-        <td>{{ form.type }}</td>
-    </tr>
 
-     <tr>
-        <th>company Name</th>
-        <td>{{ form.company_Name }}</td>
-    </tr>
-    <tr>
-        <th>Supply Place</th>
-        <td>{{ form.supply_Place }}</td>
-    </tr>
-    <tr>
-        <th>bill_No</th>
-        <td>{{ form.bill_No  }}</td>
-    </tr>
-    <tr>
-        <th>bill_Date</th>
-        <td>{{ form.bill_Date }}</td>
-    </tr>
+<body class=" app-stock model-stock change-form">
+
+<!-- Container -->
+<div id="container">
+
+
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+
+<h1 id="site-name"><a href="/admin/">Django administration</a></h1>
+
+        </div>
+
+        <div id="user-tools">
+
+                Welcome,
+                <strong>admin</strong>.
 
 
 
-</table>
+
+
+                <a href="/admin/password_change/">Change password</a> /
+
+                <a href="/admin/logout/">Log out</a>
+
+        </div>
+
+
+    </div>
+    <!-- END Header -->
+
+<div class="breadcrumbs">
+<a href="/admin/">Home</a>
+</div>
+
+
+
+
+
+
+
+    <!-- Content -->
+    <div id="content" class="colM">
+
+<style>
+    .alert-success {
+    background-image: linear-gradient(to bottom, #dff0d8 0px, #6de50e 100%);
+    background-repeat: repeat-x;
+    border-color: #6fdb1f;
+        padding: 10px;
+}
+</style>
+        {% if message %}
+    <div  id="sucsessDiv" class="alert alert-success fade in" onclick="return hideme('sucsessDiv')">
+
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+
+        <strong>Success!</strong> Your Data has been save successfully.
+
+    </div>
+    {% endif %}
+
+        <h1>Change stock</h1>
+        <div id="content-main">
+
+
+  <ul class="object-tools">
+
+    <li>
+
+        <a href="/admin/stock/stock/1/history/" class="historylink">History</a>
+    </li>
+
+
+  </ul>
+
+
+<form name="stockfrm" action="/stock/" method="post" id="stock_form" novalidate>
+<div>
+{% csrf_token %}
+
+
+
+
+
+
+  <fieldset class="module aligned ">
+
+
+
+        <div class="form-row field-type">
+
+
+                <div>
+
+
+                        <label class="required" for="id_type">Type:</label>
+<input type="radio" name="type1" value="0"  checked="checked"> In
+<input type="radio" name="type1" value="1"> Out
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-company_Name">
+
+
+                <div>
+
+
+                        <label for="id_company_Name">Company Name:</label>
+
+                            <input class="vTextField" id="id_company_Name" maxlength="250" name="company_Name" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-supply_Place">
+
+
+                <div>
+
+
+                        <label for="id_supply_Place">Supply Place:</label>
+
+                            <input class="vTextField" id="id_supply_Place" maxlength="250" name="supply_Place" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-bill_No">
+
+
+                <div>
+
+
+                        <label for="id_bill_No">Bill No:</label>
+
+                            <input class="vTextField" id="id_bill_No" maxlength="250" name="bill_No" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-bill_Date">
+
+
+                <div>
+
+
+                        <label for="id_bill_Date">Bill Date:</label>
+
+                            <input class="vDateField" id="id_bill_Date" name="bill_Date" size="10" type="text" onfocus="return funckDate('id_bill_Date')"/>
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-bill_Rec_Date">
+
+
+                <div>
+
+
+                        <label for="id_bill_Rec_Date">Bill Rec Date:</label>
+
+                            <input class="vDateField" id="id_bill_Rec_Date" name="bill_Rec_Date" size="10" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-bill_Amount">
+
+
+                <div>
+
+
+                        <label for="id_bill_Amount">Bill Amount:</label>
+
+                            <input id="id_bill_Amount" name="bill_Amount" step="any" type="number" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-lr_No">
+
+
+                <div>
+
+
+                        <label for="id_lr_No">Lr No:</label>
+
+                            <input class="vTextField" id="id_lr_No" maxlength="250" name="lr_No" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-lr_Date">
+
+
+                <div>
+
+
+                        <label for="id_lr_Date">Lr Date:</label>
+
+                            <input class="vDateField" id="id_lr_Date" name="lr_Date" size="10" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-cases">
+
+
+                <div>
+
+
+                        <label for="id_cases">Cases:</label>
+
+                            <input class="vTextField" id="id_cases" maxlength="250" name="cases" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-carriers_Name">
+
+
+                <div>
+
+
+                        <label for="id_carriers_Name">Carriers Name:</label>
+
+                            <input class="vTextField" id="id_carriers_Name" maxlength="250" name="carriers_Name" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-permit_No">
+
+
+                <div>
+
+
+                        <label for="id_permit_No">Permit No:</label>
+
+                            <input class="vTextField" id="id_permit_No" maxlength="250" name="permit_No" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-doc_Month">
+
+
+                <div>
+
+
+                        <label for="id_doc_Month">Doc Month:</label>
+
+                            <input class="vTextField" id="id_doc_Month" maxlength="250" name="doc_Month" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-F_C_O">
+
+
+                <div>
+
+
+                        <label for="id_F_C_O">F C O:</label>
+
+                            <input class="vTextField" id="id_F_C_O" maxlength="250" name="F_C_O" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-date">
+
+
+                <div>
+
+
+                        <label for="id_date">Date:</label>
+
+                            <input class="vDateField" id="id_date" name="date" size="10" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-qrt">
+
+
+                <div>
+
+
+                        <label for="id_qrt">Qrt:</label>
+
+                            <input class="vTextField" id="id_qrt" maxlength="250" name="qrt" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-year">
+
+
+                <div>
+
+
+                        <label for="id_year">Year:</label>
+
+                            <input class="vTextField" id="id_year" maxlength="250" name="year" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-remarks">
+
+
+                <div>
+
+
+                        <label for="id_remarks">Remarks:</label>
+
+                            <input class="vTextField" id="id_remarks" maxlength="250" name="remarks" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+        <div class="form-row field-commodity">
+
+
+                <div>
+
+
+                        <label for="id_commodity">Commodity:</label>
+
+                            <input class="vTextField" id="id_commodity" maxlength="250" name="commodity" type="text" />
+
+
+
+                </div>
+
+        </div>
+
+</fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="submit-row">
+<input type="submit" value="Save" class="default" name="_save" />
+
+
+    <p class="deletelink-box"><a href="/admin/stock/stock/1/delete/" class="deletelink">Delete</a></p>
+
+
+
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+(function($) {
+    var field;
+
+
+})(django.jQuery);
+</script>
+
+
+</div>
+</form></div>
+
+
+        <br class="clear" />
+    </div>
+    <!-- END Content -->
+
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+
 </body>
 </html>

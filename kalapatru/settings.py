@@ -71,7 +71,7 @@ CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'kalapatru.urls'
 
 WSGI_APPLICATION = 'kalapatru.wsgi.application'
-DATABASES_URL = 'mysql://root:root@localhost:3306/kalptaru'
+DATABASES_URL = 'mysql://root:root@localhost:3306/kalptaru1'
 DATABASES =  {'default': dj_database_url.parse(os.environ.get('DATABASES_URL',DATABASES_URL))}
 print os.environ.get('DATABASES_URL','------------------')
 
@@ -99,7 +99,13 @@ import sys
 
 PROJECT_ABSOLUTE_DIR = dirname(abspath(__file__))
 PROJECT_NAME = basename(PROJECT_ABSOLUTE_DIR)
-TEMPLATE_DIRS = [(SITE_ROOT+'/templates')]
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+)
+
+
+# TEMPLATE_DIRS = [(SITE_ROOT+'/templates')]
 print ">>>>>>>>>>>>>>>>>>>>>>>>",TEMPLATE_DIRS
 MEDIA_ROOT = PROJECT_ABSOLUTE_DIR + '/media/'
 

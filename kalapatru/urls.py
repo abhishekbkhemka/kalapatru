@@ -7,7 +7,6 @@ from stock.views import stock
 
 report.autodiscover()
 admin.autodiscover()
-
 print admin.site.urls
 urlpatterns = patterns('',
     # Examples:
