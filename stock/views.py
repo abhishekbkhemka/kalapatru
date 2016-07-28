@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from forms import StockForm
+#from forms import StockForm
 from django.contrib.auth.decorators import login_required
 from models import Stock,Company,SupplyPlace
 from django.contrib import admin
@@ -37,6 +37,7 @@ def stock(request):
             except:
                 pass
 
+<<<<<<< HEAD
             stockObj.lr_No=request.POST.get('lr_No',None)
             lr_Date = request.POST.get('lr_Date', None)
             if len(lr_Date) > 4:
@@ -60,3 +61,6 @@ def stock(request):
     else:
         context={'errorCode':404,'errorMsg':'You dont have this permissions'}
 # admin.site.register_view('somepath', view=stock)
+=======
+# admin.site.register_view('somepath', view=stock)
+>>>>>>> 20a5bd6f6c1a165c9f1161b89a8075c4c44461b1
