@@ -463,7 +463,7 @@
 
 
 <div class="submit-row">
-<input type="submit" value="Save" class="default" name="_save" />
+<input type="button" value="Save" onclick="submitForm()" hidefocus="true" tabindex="-1" class="default" name="_save" />
 
 
     <p class="deletelink-box"><a href="/admin/stock/stock/1/delete/" class="deletelink">Delete</a></p>
@@ -483,6 +483,10 @@
 
 
 })(django.jQuery);
+
+    function submitForm(){
+       document.getElementById('stock_form').submit()
+    }
 </script>
 
 

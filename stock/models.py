@@ -34,6 +34,11 @@ class Stock(models.Model):
     remarks = models.CharField(max_length=250, null=True, blank=True)
     commodity = models.CharField(max_length=250, null=True, blank=True)
 
+
+    def __str__(self):
+        return "%s ,%s ,%s  "%(CHOICES[int(self.type)][1]+' Ward',self.company_Name,self.supply_Place)
+
+
 admin.site.register(Stock)
 
 
