@@ -34,5 +34,15 @@ class Stock(models.Model):
     remarks = models.CharField(max_length=250, null=True, blank=True)
     commodity = models.CharField(max_length=250, null=True, blank=True)
 
-# admin.site.register(Stock)
+admin.site.register(Stock)
 
+
+class Company(models.Model):
+    name=models.CharField(max_length=250,null=True,blank=True)
+
+admin.site.register(Company)
+
+class SupplyPlace(models.Model):
+    name=models.CharField(max_length=250,null=True,blank=True)
+
+admin.site.register(SupplyPlace)

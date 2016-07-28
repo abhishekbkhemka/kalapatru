@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+.error_PageMain{background:url(../../com/img/medBg.png) repeat left top; font-family: 'Open Sans', sans-serif; font-weight:400;}
+.error404_PageInr{width:500px; margin:0 auto; text-align:center;}
+.errTxtE{font-family: 'Open Sans', sans-serif; font-weight:700; font-size:150px; color:#771b6a;}
+.errMsgE{font-size:25px; font-weight:600; color:#771b6a;}
+.errMsgSE{font-size:18px; font-weight:400; color:#771b6a;}
+.errMsgSE a{font-size:18px; font-family: 'Open Sans', sans-serif; font-weight:400; color:#2883b4;}
+.searchErrorSecMain{padding:60px 0;}
+.searchErrorSecMain input{border:1px solid #e6e4e4; padding:8px; height:26px; width:400px; outline-color:#ccc; font-family: 'Open Sans', sans-serif; font-weight:400;}
+.searchErrorSecMain input:focus{border:1px solid #2883b4;}
+.searchErrorSecMain button{background-color:#2883b4; border:1px solid #2883b4; font-family: 'Open Sans', sans-serif; font-weight:400; color:#fff; height:44px; padding:5px 10px; text-transform:uppercase;}
+.socialError{width:305px; margin:0 auto;}
+.socialError a{font-size:25px; padding:8px 5px 2px; text-align:center; float:left; background:#fff; border-radius:50%; width:32px; margin-right:10px; height:32px;}
+.socialError a:hover{background:none;}
+.socialError .ion-social-googleplusM{margin-right:0;}
+.socialError a span{display:block; line-height:0;}
+.socialError .ion-android-homeM .ion-android-home{color:#771b6a;}
+.socialError .ion-social-facebookM .ion-social-facebook{color:#3a5795;}
+.socialError .ion-social-twitterM .ion-social-twitter{color:#55acee;}
+.socialError .ion-social-linkedinM .ion-social-linkedin{color:#006fa6;}
+.socialError .ion-social-youtubeM .ion-social-youtube{color:#cc181e;}
+.socialError .ion-social-googleplusM .ion-social-googleplus{color:#db4437;}
+</style>
+<meta charset="utf-8">
+<title>Error</title>
+    <link href="/com/css/common.css" rel="stylesheet" />
+    <!--<link href="style.css" rel="stylesheet" />-->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300&subset=latin,latin-ext,greek,cyrillic,greek-ext,vietnamese,cyrillic-ext' rel='stylesheet' type='text/css' />
+    <link href="../app/toastr/toastr.min.css" rel="stylesheet" />
+    <script src="../app/jquery/dist/jquery.min.js"></script>
+    <script src="../app/jqueryUI/jquery-ui.min.js" async></script>
+    <script src="/com/js/config.js"></script>
+    <script src="../app/toastr/toastr.min.js"></script>
+    <script src="../com/js/util.js"></script>
+
+
+    <script type="text/javascript" src="js/waypoints.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/effectCss.css" />
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $('#header_id').load("../home/templates/header.html")
+        //$('#footer_id').load("templates/footer.html")
+    });
+</script>
+</head>
+
+<body class="error_PageMain">
+<div id="pageMain"> <!-- Page Main Start -->
+    <div id="header_id"></div>
+
+<div class="error404_Page">
+
+	<div class="error404_PageInr">
+    
+    	<div class="errTxtE">{{errorCode}}</div>
+		<div class="errMsgSE">{{errorMsg}}</div>
+
+        <div class="socialError">
+        	<a href="#" class="ion-android-homeM" title="Home"><span class="ion-android-home"></span></a>
+            <a href="#" class="ion-social-facebookM" title="Facebook"><span class="ion-social-facebook"></span></a>
+            <a href="#" class="ion-social-twitterM" title="Twitter"><span class="ion-social-twitter"></span></a>
+            <a href="#" class="ion-social-youtubeM" title="YouTube"><span class="ion-social-youtube"></span></a>
+            <a href="#" class="ion-social-linkedinM" title="Linkedin"><span class="ion-social-linkedin"></span></a>
+            <a href="#" class="ion-social-googleplusM" title="Google+"><span class="ion-social-googleplus"></span></a>
+            	<div class="clrBt"></div>
+        </div>
+    </div>
+
+</div>
+
+  
+</div> <!-- Page Main End -->
+</body>
+</html>

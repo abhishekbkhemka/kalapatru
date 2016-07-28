@@ -158,8 +158,12 @@
 
 
                         <label for="id_company_Name">Company Name:</label>
-
-                            <input class="vTextField" id="id_company_Name" maxlength="250" name="company_Name" type="text" />
+                            <select name="company_Name">
+                                {% for obj in companyObj  %}
+                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <!--<input class="vTextField" id="id_company_Name" maxlength="250" name="company_Name" type="text" />-->
 
 
 
@@ -174,8 +178,13 @@
 
 
                         <label for="id_supply_Place">Supply Place:</label>
+                            <select name="supply_Place">
+                                {% for obj in supplyPlaceObj  %}
+                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                {% endfor %}
+                            </select>
 
-                            <input class="vTextField" id="id_supply_Place" maxlength="250" name="supply_Place" type="text" />
+                            <!--<input class="vTextField" id="id_supply_Place" maxlength="250" name="supply_Place" type="text" />-->
 
 
 
