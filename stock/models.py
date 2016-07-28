@@ -36,7 +36,7 @@ class Stock(models.Model):
 
 
     def __str__(self):
-        return "%s ,%s ,%s  "%(CHOICES[int(self.type)][1]+' Ward',self.company_Name,self.supply_Place)
+        return "%s ,%s ,%s  ---%s"%(CHOICES[int(self.type)][1]+' Ward',self.company_Name,self.supply_Place,self.id)
 
 
 admin.site.register(Stock)
