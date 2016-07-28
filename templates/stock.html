@@ -160,7 +160,7 @@
                         <label for="id_company_Name">Company Name:</label>
                             <select name="company_Name">
                                 {% for obj in companyObj  %}
-                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                    <option value="{{ obj.id }}">{{ obj }}</option>
                                 {% endfor %}
                             </select>
                             <!--<input class="vTextField" id="id_company_Name" maxlength="250" name="company_Name" type="text" />-->
@@ -180,7 +180,7 @@
                         <label for="id_supply_Place">Supply Place:</label>
                             <select name="supply_Place">
                                 {% for obj in supplyPlaceObj  %}
-                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                    <option value="{{ obj.id }}">{{ obj }}</option>
                                 {% endfor %}
                             </select>
 
@@ -439,8 +439,12 @@
 
 
                         <label for="id_commodity">Commodity:</label>
-
-                            <input class="vTextField" id="id_commodity" maxlength="250" name="commodity" type="text" />
+                            <select name="commodity">
+                                {% for obj in commodityObj  %}
+                                    <option value="{{ obj.id }}">{{ obj }}</option>
+                                {% endfor %}
+                            </select>
+                            <!--<input class="vTextField" id="id_commodity" maxlength="250" name="commodity" type="text" />-->
 
 
 
@@ -463,7 +467,7 @@
 
 
 <div class="submit-row">
-<input type="submit" value="Save" class="default" name="_save" />
+<input type="button" value="Save" onclick="submitForm()" hidefocus="true" tabindex="-1" class="default" name="_save" />
 
 
     <p class="deletelink-box"><a href="/admin/stock/stock/1/delete/" class="deletelink">Delete</a></p>
@@ -483,6 +487,10 @@
 
 
 })(django.jQuery);
+
+    function submitForm(){
+       document.getElementById('stock_form').submit()
+    }
 </script>
 
 

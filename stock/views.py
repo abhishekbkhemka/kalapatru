@@ -1,7 +1,7 @@
 from django.shortcuts import render
 #from forms import StockForm
 from django.contrib.auth.decorators import login_required
-from models import Stock,Company,SupplyPlace
+from models import Stock,Company,SupplyPlace,Commodity
 from django.contrib import admin
 
 @login_required(login_url='/admin/login/')
@@ -14,16 +14,18 @@ def stock(request):
     if usr.is_superuser or 'stock' in groupList:
         companyObj=Company.objects.all()
         supplyPlaceObj=SupplyPlace.objects.all()
+        commodityObj=Commodity.objects.all()
         context={}
         context['companyObj']=companyObj
         context['supplyPlaceObj']=supplyPlaceObj
+        context['commodityObj']=commodityObj
 
         if request.method == 'POST':
             tp= request.POST.get('type1', None)
             stockObj=Stock()
             stockObj.type=request.POST.get('type1',None)
-            stockObj.company_Name=request.POST.get('company_Name',None)
-            stockObj.supply_Place=request.POST.get('supply_Place',None)
+            stockObj.company_id=str(request.POST.get('company_Name',None))
+            stockObj.supply_Place_id=str(request.POST.get('supply_Place',None))
             stockObj.bill_No=request.POST.get('bill_No',None)
             bill_Date = request.POST.get('bill_Date', None)
             if len(bill_Date)>4:
@@ -37,7 +39,6 @@ def stock(request):
             except:
                 pass
 
-<<<<<<< HEAD
             stockObj.lr_No=request.POST.get('lr_No',None)
             lr_Date = request.POST.get('lr_Date', None)
             if len(lr_Date) > 4:
@@ -52,7 +53,7 @@ def stock(request):
                 stockObj.date=date
             stockObj.qrt=request.POST.get('qrt',None)
             stockObj.remarks=request.POST.get('remarks',None)
-            stockObj.commodity=request.POST.get('commodity',None)
+            stockObj.commodity_id=str(request.POST.get('commodity',None))
             stockObj.year=request.POST.get('year',None)
             stockObj.save()
             context['message']="Stock Added Successfully"
@@ -61,6 +62,3 @@ def stock(request):
     else:
         context={'errorCode':404,'errorMsg':'You dont have this permissions'}
 # admin.site.register_view('somepath', view=stock)
-=======
-# admin.site.register_view('somepath', view=stock)
->>>>>>> 20a5bd6f6c1a165c9f1161b89a8075c4c44461b1
