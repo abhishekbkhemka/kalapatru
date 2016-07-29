@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from models import Stock,Company,SupplyPlace,Commodity
 from django.contrib import admin
 
+import json
 @login_required(login_url='/admin/login/')
 def stock(request):
     groups = request.user.groups.all()
@@ -13,11 +14,10 @@ def stock(request):
     usr=request.user
     if usr.is_superuser or 'stock' in groupList:
         companyObj=Company.objects.all()
-        supplyPlaceObj=SupplyPlace.objects.all()
         commodityObj=Commodity.objects.all()
         context={}
         context['companyObj']=companyObj
-        context['supplyPlaceObj']=supplyPlaceObj
+        # context['companyObjList']=json.dumps(list(companyObj))
         context['commodityObj']=commodityObj
 
         if request.method == 'POST':
@@ -25,7 +25,8 @@ def stock(request):
             stockObj=Stock()
             stockObj.type=request.POST.get('type1',None)
             stockObj.company_id=str(request.POST.get('company_Name',None))
-            stockObj.supply_Place_id=str(request.POST.get('supply_Place',None))
+            print str(request.POST.get('cmpAddress',None))
+            stockObj.address_id=str(request.POST.get('cmpAddress',None))
             stockObj.bill_No=request.POST.get('bill_No',None)
             bill_Date = request.POST.get('bill_Date', None)
             if len(bill_Date)>4:
@@ -61,3 +62,13 @@ def stock(request):
         return render(request, 'stock.html',context)
     else:
         context={'errorCode':404,'errorMsg':'You dont have this permissions'}
+
+
+
+def upload(request):
+
+    if request.method == 'POST':
+        fileName=request.POST.get('myfile', None)
+        print fileName
+
+    return render(request, 'uploadfile.html')
