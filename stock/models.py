@@ -14,6 +14,9 @@ CHOICES = (
 )
 
 class Address(models.Model):
+    label = models.CharField(max_length=250, null=True, blank=True)
+    cst = models.CharField(max_length=250, null=True, blank=True)
+    tin = models.CharField(max_length=250, null=True, blank=True)
     address_Line1 = models.CharField(max_length=250, null=True, blank=True)
     address_Line2 = models.CharField(max_length=250, null=True, blank=True)
     city = models.CharField(max_length=250, null=True, blank=True)
@@ -24,7 +27,7 @@ class Address(models.Model):
     country = models.CharField(max_length=250, null=True, blank=True)
 
     def __str__(self):
-        return "%s" % (self.city)
+        return "%s-%s" % (self.city,self.label)
 
 
 admin.site.register(Address)
