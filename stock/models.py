@@ -13,10 +13,45 @@ CHOICES = (
     ('1', 'Out'),
 )
 
+class Company(models.Model):
+    name=models.CharField(max_length=250,null=True,blank=True)
+    address_Line1=models.CharField(max_length=250,null=True,blank=True)
+    address_Line2=models.CharField(max_length=250,null=True,blank=True)
+    city=models.CharField(max_length=250,null=True,blank=True)
+    state=models.CharField(max_length=250,null=True,blank=True)
+    postal_Code=models.CharField(max_length=250,null=True,blank=True)
+    phone=models.CharField(max_length=250,null=True,blank=True)
+    email=models.CharField(max_length=250,null=True,blank=True)
+    country=models.CharField(max_length=250,null=True,blank=True)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+
+admin.site.register(Company)
+
+class SupplyPlace(models.Model):
+    name=models.CharField(max_length=250,null=True,blank=True)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+admin.site.register(SupplyPlace)
+
+
+class Commodity(models.Model):
+    name=models.CharField(max_length=250,null=True,blank=True)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+admin.site.register(Commodity)
+
+
 class Stock(models.Model):
     type=models.CharField(max_length=250,choices=CHOICES)
-    company_Name=models.CharField(max_length=250,null=True,blank=True)
-    supply_Place=models.CharField(max_length=250,null=True,blank=True)
+    company=models.ForeignKey(Company)
+    supply_Place=models.ForeignKey(SupplyPlace)
     bill_No=models.CharField(max_length=250,null=True,blank=True)
     bill_Date=models.DateField(null=True,blank=True)
     bill_Rec_Date=models.DateField(null=True,blank=True)
@@ -32,22 +67,13 @@ class Stock(models.Model):
     qrt = models.CharField(max_length=250, null=True, blank=True)
     year = models.CharField(max_length=250, null=True, blank=True)
     remarks = models.CharField(max_length=250, null=True, blank=True)
-    commodity = models.CharField(max_length=250, null=True, blank=True)
+    commodity = models.ForeignKey(Commodity)
 
 
     def __str__(self):
-        return "%s ,%s ,%s  ---%s"%(CHOICES[int(self.type)][1]+' Ward',self.company_Name,self.supply_Place,self.id)
+        return "%s"%(self.company.name)
 
 
 admin.site.register(Stock)
 
 
-class Company(models.Model):
-    name=models.CharField(max_length=250,null=True,blank=True)
-
-admin.site.register(Company)
-
-class SupplyPlace(models.Model):
-    name=models.CharField(max_length=250,null=True,blank=True)
-
-admin.site.register(SupplyPlace)
