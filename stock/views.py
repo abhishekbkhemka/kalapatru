@@ -56,7 +56,7 @@ def stock(request):
             stockObj.commodity_id=str(request.POST.get('commodity',None))
             stockObj.year=request.POST.get('year',None)
             stockObj.save()
-            context['message']="Stock Added Successfully"
+            context['message']="Stock Added Successfully. Note down Record Id-"+stockObj.id
             return render(request, 'stock.html',context)
         return render(request, 'stock.html',context)
     else:
