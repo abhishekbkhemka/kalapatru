@@ -56,9 +56,8 @@ def stock(request):
             stockObj.commodity_id=str(request.POST.get('commodity',None))
             stockObj.year=request.POST.get('year',None)
             stockObj.save()
-            context['message']="Stock Added Successfully. Note down Record Id-"+stockObj.id
+            context['message']="Stock Added Successfully. Note down Record Id-"+str(stockObj.id)
             return render(request, 'stock.html',context)
         return render(request, 'stock.html',context)
     else:
         context={'errorCode':404,'errorMsg':'You dont have this permissions'}
-# admin.site.register_view('somepath', view=stock)

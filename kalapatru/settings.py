@@ -71,7 +71,7 @@ CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'kalapatru.urls'
 
 WSGI_APPLICATION = 'kalapatru.wsgi.application'
-DATABASES_URL = 'mysql://root:root@localhost:3306/kalptaru1'
+DATABASES_URL = 'mysql://root:root@localhost:3306/kalptaru'
 DATABASES =  {'default': dj_database_url.parse(os.environ.get('DATABASES_URL',DATABASES_URL))}
 print os.environ.get('DATABASES_URL','------------------')
 
