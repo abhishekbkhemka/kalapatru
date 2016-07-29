@@ -47,6 +47,11 @@ def stock(request):
             stockObj.cases=request.POST.get('cases',None)
             stockObj.carriers_Name=request.POST.get('carriers_Name',None)
             stockObj.permit_No=request.POST.get('permit_No',None)
+            try:
+                permit_Amt = float(str(request.POST.get('permit_Amt', '')))
+                stockObj.permit_Amt = permit_Amt
+            except:
+                pass
             stockObj.doc_Month=request.POST.get('doc_Month',None)
             stockObj.F_C_O=request.POST.get('F_C_O',None)
             date = request.POST.get('date', None)

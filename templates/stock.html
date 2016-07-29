@@ -180,7 +180,7 @@
                             var index=document.getElementById('company_Name_id').value;
                             cmpAdrObj=cmpObj[index]
 {#                            console.log(cmpAdrObj[0]);#}
-                            var selectList = document.getElementById("mySelect");
+                            var selectList = document.getElementById("mySelect1");
                             var i;
                             for(i = selectList.options.length - 1 ; i >= 0 ; i--)
                             {
@@ -196,7 +196,7 @@
                                 selectList.appendChild(option);
                             }
 
-
+                        return false;
 
                         }
                 </script>
@@ -217,8 +217,8 @@
 
         <div class="form-row field-supply_Place" >
                <div>
-                        <label for="id_company_Name">Company Address:</label>
-                        <select  id='mySelect' name="cmpAddress" onchange="return getAddress()">
+                        <label for="id_company_add">Company Address:</label>
+                        <select  id='mySelect1' name="cmpAddress">
                         </select>
                 </div>
 
@@ -367,6 +367,23 @@
                 </div>
 
         </div>
+
+        <div class="form-row field-permit_No">
+
+
+                <div>
+
+
+                        <label for="id_permit_AmtLb">Permit Ammount:</label>
+
+                            <input class="vTextField" id="id_permit_Amt" maxlength="250" name="permit_Amt" type="text" />
+
+
+
+                </div>
+
+        </div>
+
 
         <div class="form-row field-doc_Month">
 

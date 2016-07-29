@@ -73,6 +73,7 @@ class Stock(models.Model):
     cases = models.CharField(max_length=250, null=True, blank=True)
     carriers_Name = models.CharField(max_length=250, null=True, blank=True)
     permit_No = models.CharField(max_length=250, null=True, blank=True)
+    permit_Amt = models.FloatField(null=True, blank=True)
     doc_Month = models.CharField(max_length=250, null=True, blank=True)
     F_C_O=models.CharField(max_length=250, null=True, blank=True)
     date = models.DateField(null=True, blank=True)
