@@ -131,18 +131,18 @@ def stock_cmp__name(value, instance):
         res = Company.objects.get(pk=str(value)).name
     return _(res)
 
-def suply__place__name(value, instance):
-    res = 'NA'
-    if value:
-        res = SupplyPlace.objects.get(pk=str(value)).name
-    return _(res)
+# def suply__place__name(value, instance):
+#     res = 'NA'
+#     if value:
+#         res = SupplyPlace.objects.get(pk=str(value)).name
+#     return _(res)
 
 class Stock(ReportAdmin):
     model = Stock
     fields = [
         'type',
         'company',
-        'supply_Place',
+        'address',
         'bill_No',
         'bill_Date',
         'bill_Rec_Date',
@@ -162,11 +162,11 @@ class Stock(ReportAdmin):
     ]
 
     # list_group_by = ('date','forwardingNote','vanNo' )
-    list_filter = ('type','company','supply_Place','date','remarks','bill_Date',)
+    list_filter = ('type','company','address','date','remarks','bill_Date',)
     override_field_formats = {
 
         'company': stock_cmp__name,
-        'supply_Place': suply__place__name,
+        # 'address': suply__place__name,
     }
 
 reports.register('Stock', Stock)
