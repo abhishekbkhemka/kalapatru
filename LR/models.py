@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 
 
-
 # Create your models here.
 COUNTRY = (
     ('IN', 'India'),
@@ -13,7 +12,9 @@ STATE = (
     ('BR', 'Bihar'),
 )
 
-
+class ResetId(models.Model):
+    forwardingNoteId=models.BigIntegerField(null=True,blank=True)
+    dispatchId=models.BigIntegerField(null=True,blank=True)
 
 
 
@@ -151,10 +152,23 @@ class ForwardingNote(models.Model):
     isDispatched = models.BooleanField(default=False)
     company  = models.ForeignKey(Company,blank=True,null=True)
     fnDate = models.DateTimeField()
+    slug=models.BigIntegerField(null=True,blank=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            rObj=ResetId.objects.all().order_by("-id")[0]
+            newSlug=rObj.forwardingNoteId+1 if rObj.forwardingNoteId else 1
+        except:
+            rObj=ResetId()
+            newSlug=1
+        self.slug = newSlug
+        rObj.forwardingNoteId = newSlug
+        rObj.save()
+
+        super(ForwardingNote, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s -marka -%s on date:- %s"%(self.id,self.marka,self.fnDate)
-
     # def get(self, *args, **kwargs):
     #     if request.user == self.person:
     #         super(ForwardingNote, self).get(*args, **kwargs)
@@ -169,6 +183,20 @@ class Dispatch(models.Model):
     name = models.CharField(max_length=250,blank=True,null=True)
     remarks = models.CharField(max_length=250,blank=True,null=True)
     isLocked = models.BooleanField(default=True)
+    slug = models.BigIntegerField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            rObj = ResetId.objects.all().order_by("-id")[0]
+            newSlug = rObj.dispatchId + 1 if rObj.dispatchId else 1
+        except:
+            rObj = ResetId()
+            newSlug = 1
+        self.slug = newSlug
+        rObj.dispatchId = newSlug
+        rObj.save()
+
+        super(Dispatch, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s is Disparch on %s"%(self.name,self.date)
@@ -189,7 +217,6 @@ class Commodity(models.Model):
 
 
 
-
 admin.site.register(Transporter)
 admin.site.register(Consignor)
 admin.site.register(Station)
@@ -199,4 +226,11 @@ admin.site.register(Dispatch)
 admin.site.register(Organization)
 admin.site.register(Company)
 admin.site.register(Commodity)
+admin.site.register(ResetId)
 # admin.site.register(Address)
+
+'''
+#UPDATE LR_forwardingnote SET slug=id where id>0;
+#UPDATE LR_dispatch SET slug=id where id>0;
+
+'''
