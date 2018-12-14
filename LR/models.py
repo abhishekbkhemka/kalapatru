@@ -234,3 +234,25 @@ admin.site.register(ResetId)
 #UPDATE LR_dispatch SET slug=id where id>0;
 
 '''
+##################### Daily Report Models Begins here ##############
+from utils import validate_json
+
+
+class DailyReport(models.Model):
+    purchase_detail = models.TextField(default='[]',blank=True,null=True,validators=[validate_json])
+    expenses_detail = models.TextField(default='[]', blank=True, null=True, validators=[validate_json])
+    misc_cash_in_details = models.TextField(default='[]',blank=True,null=True,validators=[validate_json])
+    day_card_sale =models.FloatField(blank=True,null=True,default=0)
+    bank_deposit =models.FloatField(blank=True,null=True,default=0)
+    day_credit_sale =models.FloatField(blank=True,null=True,default=0)
+    total_expense =models.FloatField(blank=True,null=True,default=0)
+    total_credit_purchase =models.FloatField(blank=True,null=True,default=0)
+    total_cash_purchase =models.FloatField(blank=True,null=True,default=0)
+    opening_balance =models.FloatField(blank=True,null=True,default=0)
+    total_misc_cash_in =models.FloatField(blank=True,null=True,default=0)
+    cash_inhand =models.FloatField(blank=True,null=True,default=0)
+    date = models.DateField(blank=True,null=True)
+    day_cash_sale =models.FloatField(blank=True,null=True,default=0)
+    branch_name = models.CharField(max_length=50,blank=True,null=True)
+    day_cash_difference = models.FloatField(blank=True,null=True,default=0)
+    is_editable=models.BooleanField(default=False)

@@ -1,0 +1,574 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Medicokare Daily Report </title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="AbHi">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+
+	<!--<script src={%  static  "dailyReports.js" %}></script>-->
+
+    <style type="text/css">
+		#productDiv{
+			overflow: auto;
+			height:100%;
+		}
+
+
+
+
+	    </style>
+</head>
+<body>
+
+        <div data-role="main" class="ui-content " >
+            <a onclick="gotochart()">Dashboard</a>
+			<label id="todaydate">Today's Date : </label>
+
+			<h2 align="center">Today's Sale and Income Figure </h2>
+
+            <form id="reportForm">
+				<table>
+<tr>
+						<td >
+							<label for="branchName">Branch Name </label>
+						</td>
+						<td>
+                            <select name="sale" id="branchName"   data-clear-btn="true" required>
+                               {% for i in branches %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+							<!--<input type="text" name="sale" id="branchName"   data-clear-btn="true" required />-->
+						</td>
+
+					</tr>
+<tr>
+						<td >
+							<label for="dateRecord">Date of report </label>
+						</td>
+						<td>
+                     <input type="date" onchange="dateReportHandler(event)" name="dateRecord" id="dateRecord">
+
+                     	</td>
+
+					</tr>
+
+
+                    <tr>
+						<td >
+							<label for="openingBalance">Opening Balance </label>
+						</td>
+						<td>
+							<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="sale" id="openingBalance" placeholder="Amount" data-clear-btn="true" required />
+						</td>
+
+					</tr>
+					<tr>
+						<td >
+							<label for="cashsale">Cash Sale :</label>
+						</td>
+						<td>
+							<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="sale" id="cashsale" placeholder="Amount" data-clear-btn="true" required />
+						</td>
+
+					</tr>
+
+					<tr>
+						<td >
+							<label for="creditsale">Credit Sale :</label>
+						</td>
+						<td>
+							<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="sale" id="creditsale" placeholder="Amount" data-clear-btn="true"  />
+						</td>
+
+					</tr>
+
+					<tr>
+						<td >
+							<label for="cardsale">Card Sale :</label>
+						</td>
+						<td>
+							<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="sale" id="cardsale" placeholder="Amount" data-clear-btn="true"  />
+						</td>
+
+					</tr>
+						<tr>
+							<td >
+								<label for="otherCashIn">Total Other Cash In:</label>
+							</td>
+							<td>
+									<label id="otherCashIn"></label>
+							</td>
+
+						</tr>
+				</table>
+
+
+ 			</form>
+
+			<form id="miscsaleform">
+					<table id="miscSaleTable">
+						<tr>
+							<td >
+							<input name="sale" id="miscSaleType" placeholder="Misc Cash In" data-clear-btn="true" required  />
+						</td>
+					<td>
+						<input type="number"  onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="sale" id="miscSale" placeholder="Amount" data-clear-btn="true" required  />
+					</td>
+					<td>
+						 <button type="submit"  class='ui-btn  ui-icon-plus ui-btn-icon-notext ui-corner-all' />
+						</td>
+
+					</tr>
+
+				</table>
+
+			</form>
+
+			<div   >
+			<h2 align="center">Today's Purchase and Expense Figure </h2>
+			<div>
+				<table>
+					<tr>
+						<td>
+							<label for="totalCashPurchase">Total Cash Purchase : </label>
+						</td>
+						<td>
+							<label id="totalCashPurchase"></label>
+						</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="totalCreditPurchase"> Total Credit Purchase :</label>
+					</td>
+					<td>
+						<label id="totalCreditPurchase"></label>
+					</td>
+				</tr>
+					<tr>
+						<td>
+							<label for="otherExpense"> Total Other Expenses :</label>
+						</td>
+						<td>
+							<label id="otherExpense"></label>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+
+
+
+			<div>
+				<table>
+					<tr>
+						<td >
+							<label for="cashInhand">Cash In Hand </label>
+						</td>
+						<td>
+							<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')"  name="sale" id="cashInhand" placeholder="Amount" data-clear-btn="true" required />
+						</td>
+
+					</tr>
+					</table>
+			</div>
+			<div>
+				<table>
+					<tr>
+						<td>
+			<label for="differenceAMount ">Day Cash Difference ( It Should be Zero) :</label>
+			</td>
+			<td>
+			<label id="differenceAmount">0</label>
+			</td>
+			</table>
+		  </div>
+		<div>
+
+				<form id="purchaseform">
+
+						<table id="purchaseTable">
+							<h4> Purchase Report </h4>
+							<tr>
+								<td >
+								<input name="sale" id="purchasePartyName" placeholder="Supplier Name" data-clear-btn="true" required  />
+							</td>
+						<td>
+							<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="purchase" id="purchasePartyAmount" placeholder="Amount" data-clear-btn="true" required  />
+						</td>
+						<td>
+							<select id="transactionType" placeholder="Select transaction Type...">
+											        <option>Credit</option>
+											        <option>Cash</option>
+
+										        </select>
+
+						</td>
+						<td>
+							 <button type="submit"  class='ui-btn  ui-icon-plus ui-btn-icon-notext ui-corner-all' />
+							</td>
+
+						</tr>
+
+					</table>
+
+				</form>
+				</div>
+				<div>
+					<h4> Expense Report </h4>
+					<form id="expenseform">
+							<table id="expenseTable">
+								<tr>
+									<td >
+									<input name="sale" id="expenseName" placeholder="Expense Name" data-clear-btn="true" required  />
+								</td>
+							<td>
+								<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name="purchase" id="expenseAmount" placeholder="Amount" data-clear-btn="true" required  />
+							</td>
+
+							<td>
+								 <button type="submit" id="smBtn"  class='ui-btn  ui-icon-plus ui-btn-icon-notext ui-corner-all' />
+								</td>
+
+							</tr>
+
+						</table>
+
+					</form>
+			</div>
+
+			</div>
+           <div>
+
+					<input type="number" onkeyup="this.value=this.value.replace(/[^\d]/,'')" name='deposit' id="bankDeposit" placeholder="Bank deposit" data-clear-btn="true">
+
+			</div>
+
+</div>
+
+    </div>
+<div align="center">
+	<button type='submit' onclick="submitPage()" id="orderSubmitButton" allign="center"  data-icon="check" data-iconpos="right" data-inline="true" >Submit</button>
+</div>
+ <script>
+        console.log("loaded");
+        document.getElementById('dateRecord').valueAsDate = new Date();
+        $('#dateRecord').trigger('change', []);
+
+	var SALECOUNT = 0;
+	var PURCHASECOUNT = 0;
+	var EXPENSECOUNT = 0;
+
+	var saleList ={};
+	var purchaseList = {};
+	var expenseList = {};
+	var totalCashPurchase = 0;
+	var totalCreditPurchase = 0;
+	var otherExpense = 0;
+	var otherCashIn = 0;
+	var diffinCash = 0
+
+			$(document).ready(function(){
+
+				var todayDate = new Date();
+				$("#todaydate").text(todayDate)
+  $("input").focusout(function(){
+    calcuateDayDifference();
+  });
+
+
+
+			});
+
+function dateReportHandler(e) {
+   var dt= $("#dateRecord").val();
+    var bn=encodeURIComponent($("#branchName").val());
+
+    var url = "/dailyreport/check/?date=" + dt +"&branchname=" + bn  ;
+	console.log(url);
+	$.get(url,function (data,status)
+    {
+       if(JSON.stringify(data)=="{}"){
+
+       }
+       else{
+           window.editmode=true;
+           var popData=JSON.parse(JSON.stringify(data));
+           //var jData=JSON.parse(data)
+           $("#openingBalance").val((popData.opening_balance));
+ $("#cashsale").val((popData.day_cash_sale));
+ $("#creditsale").val((popData.day_credit_sale));
+ $("#cardsale").val((popData.day_card_sale));
+ $("#cashInhand").val((popData.cash_inhand));
+ $("#bankDeposit").val((popData.bank_deposit));
+$("#branchName").val((popData.branch_name));
+$("#Date").val((popData.date));
+
+ var purchase_detail=JSON.parse(popData.purchase_detail);
+           for(var key in purchase_detail){
+     var val= purchase_detail[key];
+     $("#purchasePartyName").val(val.supplierName);
+     $("#transactionType").val(val.transactionType)
+     $("#purchasePartyAmount").val(val.purchaseAmount);
+ $("#purchaseform").trigger('submit')
+           }
+
+           var expense_detail=JSON.parse(popData.expenses_detail);
+           for(var key in expense_detail){
+     var val= expense_detail[key];
+     $("#expenseAmount").val(val.expenseAmount);
+     $("#expenseName").val(val.expenseName)
+ $("#expenseform").trigger('submit')
+           }
+
+
+
+
+ var misc_cash_in = JSON.parse(popData.misc_cash_in_details)
+
+           for(var key in misc_cash_in)
+{
+    var val = misc_cash_in[key];
+$("#miscSaleType").val(val.miscCashInName);
+$("#miscSale").val(val.miscCashInAmount);
+$("#miscsaleform").trigger('submit');
+}
+
+
+
+       }
+    }).fail(function () {
+        alert("Record entry found for selected date. Please contact admin to edit the record.");
+    });
+}
+
+$(document).on('submit', '#miscsaleform', function() {
+			SALECOUNT = SALECOUNT +1
+			var rowId = SALECOUNT
+			var td = "<tr id='sale"+rowId+"'><td><label>Sale Name :  "+$("#miscSaleType").val()+"&nbsp;&nbsp;&nbsp;&nbsp; Rs :"+$("#miscSale").val() +"</tr>"
+			var input = "<td><a onclick='removeMiscSale("+rowId+")' class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all' /></td>"
+
+			$("#miscSaleTable").append(td)
+			$("#sale"+rowId).append(input)
+			saleList[rowId] ={miscCashInName:$("#miscSaleType").val(),miscCashInAmount:parseInt($("#miscSale").val())}
+			otherCashIn = otherCashIn + parseInt($("#miscSale").val())
+			$("#otherCashIn").text(otherCashIn)
+			$("#miscSaleType").val('') ;
+			$("#miscSale").val('') ;
+			calcuateDayDifference();
+ 			return false
+})
+
+
+
+		$(document).on('submit', '#purchaseform', function() {
+					PURCHASECOUNT = PURCHASECOUNT +1
+					var rowId = PURCHASECOUNT
+					var td = "<tr id='purchase"+rowId+"'><td><label> Supplier Name : "+$("#purchasePartyName").val()+"&nbsp;&nbsp;&nbsp;&nbsp; Rs : "+$("#purchasePartyAmount").val() +" &nbsp;&nbsp;&nbsp;&nbsp; Type - "+$("#transactionType").val()+"</tr>"
+					var input = "<td><a onclick='removePurchase("+rowId+")' class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all' /></td>"
+
+					$("#purchaseTable").append(td)
+					$("#purchase"+rowId).append(input)
+					purchaseList[rowId] ={supplierName:$("#purchasePartyName").val() ,purchaseAmount:parseInt($("#purchasePartyAmount").val()),transactionType:$("#transactionType").val()}
+					if($("#transactionType").val() == 'Cash'){
+						totalCashPurchase = totalCashPurchase + parseInt($("#purchasePartyAmount").val())
+						$("#totalCashPurchase").text(totalCashPurchase)
+
+					}else{
+						totalCreditPurchase = totalCreditPurchase + parseInt($("#purchasePartyAmount").val())
+						$("#totalCreditPurchase").text(totalCreditPurchase)
+					}
+
+					$("#purchasePartyName").val('') ;
+					$("#purchasePartyAmount").val('') ;
+					calcuateDayDifference();
+
+		 			return false
+		})
+
+		$(document).on('submit', '#expenseform', function() {
+
+					EXPENSECOUNT = EXPENSECOUNT +1
+					var rowId = EXPENSECOUNT
+					var td = "<tr id='expense"+rowId+"'><td><label> Expense Name : "+$("#expenseName").val()+"&nbsp;&nbsp;&nbsp;&nbsp; Rs : "+$("#expenseAmount").val() +"</tr>"
+					var input = "<td><a onclick='removeExpense("+rowId+")' class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all' /></td>"
+
+					$("#expenseTable").append(td)
+					$("#expense"+rowId).append(input)
+					expenseList[rowId] ={expenseAmount:parseInt($("#expenseAmount").val()),expenseName:$("#expenseName").val() }
+					otherExpense = otherExpense + parseInt($("#expenseAmount").val())  ;
+					$("#otherExpense").text(otherExpense)
+					$("#expenseName").val('') ;
+					$("#expenseAmount").val('') ;
+					calcuateDayDifference();
+
+
+		 			return false
+		})
+
+
+			function removeMiscSale(Id){
+				$("#sale"+Id).remove();
+				var miscCash = saleList[Id+'']
+				otherCashIn = otherCashIn - miscCash.miscCashInAmount  ;
+			$("#otherCashIn").text(otherCashIn)
+				delete saleList[Id+'']
+
+				SALECOUNT = SALECOUNT -1
+			calcuateDayDifference()
+
+			}
+
+			function removePurchase(Id){
+				$("#purchase"+Id).remove();
+				var purchase = purchaseList[Id+'']
+				if(purchase.transactionType == 'Cash'){
+					totalCashPurchase = totalCashPurchase - purchase.purchaseAmount
+					$("#totalCashPurchase").text(totalCashPurchase)
+
+				}else{
+					totalCreditPurchase = totalCreditPurchase - purchase.purchaseAmount
+					$("#totalCreditPurchase").text( totalCreditPurchase)
+				}
+
+					delete purchaseList[Id+'']
+					PURCHASECOUNT = PURCHASECOUNT -1;
+			calcuateDayDifference()
+
+
+			}
+
+			function removeExpense(Id){
+
+
+				$("#expense"+Id).remove();
+				var expense = expenseList[Id+'']
+				otherExpense = otherExpense - expense.expenseAmount  ;
+				$("#otherExpense").text(otherExpense)
+				delete expenseList[Id+'']
+				EXPENSECOUNT = EXPENSECOUNT -1;
+			calcuateDayDifference()
+
+
+			}
+
+
+
+			function submitPage(){
+        $('#dateRecord').trigger('change', []);
+
+                document.getElementById("orderSubmitButton").disabled = true
+				if(diffinCash < 0 ){
+					var onclick = confirm('Your day difference is in negative. You sure you want to continue ?')
+
+					if(onclick){
+						return send()
+					}
+
+				}else{
+					return send()
+				}
+
+
+			}
+
+			function send(){
+					requestList = {};
+					requestList['Date'] = $("#dateRecord").val()
+					requestList['BranchName'] = $("#branchName").val()
+
+
+					requestList['openingBalance'] = parseInt($("#openingBalance").val());
+										requestList['dayCashSale'] = parseInt($("#cashsale").val());
+										requestList['dayCreditSale'] = parseInt($("#creditsale").val());
+										requestList['dayCardSale'] = parseInt($("#cardsale").val());
+										requestList['TotalMiscCashIn'] = otherCashIn;
+										requestList['miscCashInDetails'] = saleList;
+
+										requestList['totalCashPurchase'] = parseInt($("#totalCashPurchase").text());
+										requestList['totalCreditPurchase'] = parseInt($("#totalCreditPurchase").text());
+										requestList['cashInhand'] = parseInt($("#cashInhand").val());
+										requestList['DayCashDifference'] = parseInt($("#differenceAmount").text());
+										requestList['purchaseDetail'] = purchaseList;
+										requestList['expensesDetail'] = expenseList;
+                                        requestList['totalExpense'] = otherExpense;
+                                        requestList['bankDeposit'] = parseInt($("#bankDeposit").val());
+
+if(window.editmode){
+   var sendData = {
+        data: JSON.stringify(requestList),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+       edit:true
+    };
+}
+else {
+    var sendData = {
+        data: JSON.stringify(requestList),
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+    };
+}
+var myurl="/dailyreport/";
+					$.ajax({
+					        url: myurl,
+					        type: "POST",
+                            data: sendData,
+							dataType:"json",
+					        success:function(data){
+					           if(data.status == 'success'){
+
+																						window.location = "thankyoureport.html"
+																					}else{
+																							window.location = "error.html"
+																					}
+
+					        }
+					    });
+			}
+			function calcuateDayDifference(){
+		//		try{
+
+				var totalCashSale = parseInt($("#cashsale").val());
+				if(isNaN(totalCashSale)){
+					totalCashSale = 0
+				}
+					var openingBalance = parseInt($("#openingBalance").val())
+				if(isNaN(openingBalance)){
+					openingBalance = 0;
+				}
+
+
+				var totalCashExpense = otherExpense + totalCashPurchase;
+				var totalCashToBe =  (totalCashSale +openingBalance+otherCashIn) ;
+				var cashInHand = parseInt($("#cashInhand").val())
+				var bankDeposit = parseInt($("#bankDeposit").val())
+                                bankDeposit = isNaN(bankDeposit) ? 0 : bankDeposit
+				if(isNaN(cashInHand)){
+					cashInHand = 0;
+				}
+
+				diffinCash = (cashInHand+totalCashExpense+bankDeposit)- totalCashToBe
+				var color = 'black'
+				if(diffinCash < 0){
+					color = 'red'
+				}
+				$("#differenceAmount").text(diffinCash);
+				$("#differenceAmount").css('color',color);
+
+		//	}catch(err){
+		//
+		//	}
+
+
+			}
+
+function gotochart() {
+window.location="/dailyreport/chart";
+}
+    </script>
+</body>
+</html>

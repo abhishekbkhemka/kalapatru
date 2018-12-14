@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from LR.views import transporters,customers,forwardingNote,forwardingNotes,settings,dispatch,dispatches,vans
+from LR.dailyreport import dailyReportView,chartView
 from model_report.urls import *
 from model_report import report
 from stock.views import stock,upload
-
+from LR.dailyreport import CheckEntryView
 report.autodiscover()
 admin.autodiscover()
 print admin.site.urls
@@ -29,4 +30,7 @@ urlpatterns = patterns('',
     url(r'^report/', include('model_report.urls')),
     url(r'^stock/$', stock),
     url(r'^stock/upload/$', upload),
+    url(r'^dailyreport/$', dailyReportView),
+    url(r'^dailyreport/chart/$', chartView),
+    url(r'^dailyreport/check/$', CheckEntryView.as_view()),
 )
