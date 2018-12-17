@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import re,json
+from constants import BRANCHES
 from django.shortcuts import redirect
 from django.db.models import Sum
 from datetime import datetime
@@ -36,7 +37,12 @@ def chartView(request):
     if request.method=="GET":
         start_date=request.GET.get('start_date',datetime.strftime(datetime.today(),"%Y-%m-%d"))
         end_date=request.GET.get('end_date',datetime.strftime(datetime.today(),"%Y-%m-%d"))
-        data=DailyReport.objects.filter(date__gte=start_date,date__lte=end_date).aggregate(Sum("day_card_sale")
+        filterParams={}
+        filterParams["date__gte"] = start_date
+        filterParams["date__lte"] = end_date
+        if request.GET.get("branch") and not request.GET.get("branch")=="All":
+            filterParams["branch_name"] =request.GET.get("branch")
+        data=DailyReport.objects.filter(**filterParams).aggregate(Sum("day_card_sale")
         ,Sum("day_credit_sale"),Sum("day_cash_sale"),
         Sum("total_credit_purchase"),Sum("total_cash_purchase"),
         Sum("bank_deposit"),
@@ -46,6 +52,7 @@ def chartView(request):
         data.insert(3,sum(data[0:3]))
         data.insert(6,sum(data[4:6]))
         context['data']=data
+        context['branches'] = BRANCHES
     return render(request,"chart.html",context)
 def dailyReportView(request):
     context={}
@@ -80,5 +87,5 @@ def dailyReportView(request):
 
     if request.method == "GET":
         #Add branches here
-        context['branches']=['Raja Bazar']
+        context['branches']= BRANCHES
     return render(request, 'dailyreport.html', context)

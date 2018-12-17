@@ -11,6 +11,12 @@
 <body>
 <form>
      <input name="dates">
+    <select name="branch" id="branch">
+  <option value="All">All</option>
+        {% for i in branches %}
+  <option value="{{i}}">{{ i }}</option>
+        {% endfor %}
+</select>
 </form>
 <canvas id="canvas"></canvas>
 	<button hidden id="randomizeData">Randomize Data</button>
@@ -142,7 +148,7 @@
         }}
     );
      $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
-         window.location="/dailyreport/chart/?start_date="+picker.startDate.format('YYYY-MM-DD') +"&end_date=" + picker.endDate.format('YYYY-MM-DD');
+         window.location="/dailyreport/chart/?start_date="+picker.startDate.format('YYYY-MM-DD') +"&end_date=" + picker.endDate.format('YYYY-MM-DD') + "&branch=" + $("#branch").val();
   });
 
 
