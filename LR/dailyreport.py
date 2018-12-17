@@ -76,28 +76,6 @@ def dailyReportView(request):
         else:
             return HttpResponse(serializer.errors)
 
-            # obj=DailyReport()
-
-        """
-        obj.misc_cash_in_details = json.dumps(data["miscCashInDetails"])
-        obj.purchase_detail = json.dumps(data["purchaseDetail"])
-        obj.expenses_detail = json.dumps(data["expensesDetail"])
-        obj.day_card_sale=data["dayCardSale"] if data["dayCardSale"] else 0
-        obj.bank_deposit = data["bankDeposit"] if data["bankDeposit"] else 0
-        obj.day_credit_sale = data["dayCreditSale"] if data["dayCreditSale"] else 0
-        obj.total_expense = data["totalExpense"] if data["totalExpense"] else 0
-        obj.total_credit_purchase = data["totalCreditPurchase"] if data["totalCreditPurchase"] else 0
-        obj.total_cash_purchase = data["totalCashPurchase"] if data["totalCashPurchase"] else 0
-        obj.opening_balance = data["openingBalance"] if data["openingBalance"] else 0
-        obj.total_misc_cash_in = data["TotalMiscCashIn"] if data["TotalMiscCashIn"] else 0
-        obj.cash_inhand = data["cashInhand"] if data["cashInhand"] else 0
-        obj.date = data["Date"]
-        obj.day_cash_sale = data["dayCashSale"] if data["dayCashSale"] else 0
-        obj.branch_name = data["BranchName"]
-        obj.day_cash_difference = data["DayCashDifference"] if data["DayCashDifference"] else 0
-        obj.is_editable =False
-        obj.save()
-        """
         return HttpResponse("Daily Report Created")
 
     if request.method == "GET":
