@@ -1,14 +1,19 @@
 from django.shortcuts import render
 import re,json
+from django.shortcuts import redirect
+from django.db.models import Sum
 from datetime import datetime
 from  django.http import HttpResponse
 from LR.models import DailyReport
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django import  forms
-from django.core.exceptions import MultipleObjectsReturned
 from LR.Serializers import DailyReportSerializer
+
+def to_snake_case(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
 class CheckEntryView(APIView):
     def get(self,request):
         data=request.query_params
@@ -20,7 +25,6 @@ class CheckEntryView(APIView):
                 stat = status.HTTP_200_OK
                 serializer=DailyReportSerializer(obj)
                 return Response(serializer.data, status=stat)
-
             else:
                 stat = status.HTTP_403_FORBIDDEN
         except DailyReport.DoesNotExist:
@@ -32,36 +36,28 @@ def chartView(request):
     if request.method=="GET":
         start_date=request.GET.get('start_date',datetime.strftime(datetime.today(),"%Y-%m-%d"))
         end_date=request.GET.get('end_date',datetime.strftime(datetime.today(),"%Y-%m-%d"))
-        objs=DailyReport.objects.filter(date__gte=start_date,date__lte=end_date)
-        card_sale=0
-        credit_sale=0
-        cash_sale=0
-        total_sale=0
-        credit_purchase=0
-        cash_purchase=0
-        total_purchase=0
-        total_deposit=0
-        total_expense=0
-        total_cash_in=0
-        for i in objs:
-            card_sale+=i.day_card_sale
-            credit_sale+=i.day_credit_sale
-            cash_sale+=i.day_cash_sale
-            credit_purchase+=i.total_credit_purchase
-            cash_purchase+=i.total_cash_purchase
-            total_deposit+=i.bank_deposit
-            total_expense+=i.total_expense
-            total_cash_in+=i.total_misc_cash_in
-        total_sale=card_sale+credit_sale+cash_sale
-        total_purchase=credit_purchase+cash_purchase
-        context['data']=[card_sale,credit_sale,cash_sale,total_sale,credit_purchase,cash_purchase,total_purchase,total_deposit,total_expense,total_cash_in]
+        data=DailyReport.objects.filter(date__gte=start_date,date__lte=end_date).aggregate(Sum("day_card_sale")
+        ,Sum("day_credit_sale"),Sum("day_cash_sale"),
+        Sum("total_credit_purchase"),Sum("total_cash_purchase"),
+        Sum("bank_deposit"),
+        Sum("total_expense"),
+        Sum("total_misc_cash_in")
+).values()
+        data.insert(3,sum(data[0:3]))
+        data.insert(6,sum(data[4:6]))
+        context['data']=data
     return render(request,"chart.html",context)
-from django.shortcuts import redirect
 def dailyReportView(request):
     context={}
     if request.method=="POST" and request.is_ajax():
         data = request.POST.get("data")
         data=json.loads(data)
+        camel={}
+        for i in data.keys():
+            value=data[i]
+            if 'detail' in i.lower():
+                value=json.dumps(value)
+            camel[to_snake_case(i)]=value if value else 0
         try:
             obj = DailyReport.objects.get(branch_name=data.get("BranchName"), date=data.get("Date"))
             if not obj.is_editable:
@@ -70,8 +66,19 @@ def dailyReportView(request):
             pass
         if 'edit' in request.POST:
             obj=DailyReport.objects.get(branch_name=data.get("BranchName"),date=data.get("Date"))
+            camel["is_editable"]=False
+            serializer=DailyReportSerializer(obj,data=camel)
         else:
-            obj=DailyReport()
+            serializer = DailyReportSerializer(data=camel)
+        if serializer.is_valid():
+            serializer.save()
+            return HttpResponse(serializer.data)
+        else:
+            return HttpResponse(serializer.errors)
+
+            # obj=DailyReport()
+
+        """
         obj.misc_cash_in_details = json.dumps(data["miscCashInDetails"])
         obj.purchase_detail = json.dumps(data["purchaseDetail"])
         obj.expenses_detail = json.dumps(data["expensesDetail"])
@@ -90,7 +97,8 @@ def dailyReportView(request):
         obj.day_cash_difference = data["DayCashDifference"] if data["DayCashDifference"] else 0
         obj.is_editable =False
         obj.save()
-        return HttpResponse("dw")
+        """
+        return HttpResponse("Daily Report Created")
 
     if request.method == "GET":
         #Add branches here
