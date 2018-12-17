@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django import  forms
 from django.core.exceptions import MultipleObjectsReturned
-from LR.serializers import DailyReportSerializer
+from LR.Serializers import DailyReportSerializer
 class CheckEntryView(APIView):
     def get(self,request):
         data=request.query_params
