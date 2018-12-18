@@ -165,7 +165,7 @@
 
                                 {
                                     id: "{{ add.id|escapejs }}",
-                                    city: "{{ add.city|escapejs }}"
+                                    label: "{{ add.city|escapejs }}"+"--"+"{{add.label|escapejs}}"
                                 },
 
 
@@ -192,7 +192,7 @@
                                 console.log(cmpAdrObj[i].id);
                                 var option = document.createElement("option");
                                 option.value = cmpAdrObj[i].id;
-                                option.text = cmpAdrObj[i].city;
+                                option.text = cmpAdrObj[i].label;
                                 selectList.appendChild(option);
                             }
 
@@ -207,6 +207,7 @@
 
                         <label for="id_company_Name">Company Name:</label>
                                             <select  id='company_Name_id' name="company_Name" onchange="return getAddress()">
+				<option value="">------</option>
                                 {% for obj in companyObj  %}
                                     <option value="{{ obj.id }}">{{ obj }}</option>
                                 {% endfor %}
