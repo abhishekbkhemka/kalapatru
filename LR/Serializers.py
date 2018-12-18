@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from LR.models import Transporter,Customer,ForwardingNote,Dispatch,Station,Company,Commodity
 
+from LR.models import DailyReport
+
 class CommoditySeializers(serializers.ModelSerializer):
     class Meta:
         model = Commodity
@@ -52,3 +54,8 @@ class DispatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dispatch
         fields = ('id','date','vanNo','name','remarks','forwardingNote','isLocked')
+class DailyReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=DailyReport
+        fields="__all__"
+

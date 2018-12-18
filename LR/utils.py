@@ -1,5 +1,6 @@
 from datetime              import *
-
+import json
+from django.core.exceptions import ValidationError
 def getServerDateFromStr(dateStr):
      if dateStr != '' and dateStr != None:
         try:    return datetime.strptime(dateStr,"%d-%m-%Y")
@@ -36,3 +37,9 @@ def dictfetchall(cursor):
         dict(zip([col[0] for col in desc], row))
         for row in cursor.fetchall()
     ]
+
+def validate_json(value):
+    try:
+        json.loads(value)
+    except:
+        raise ValidationError(u'%s is not an Valid Json - ' % value)
