@@ -28,8 +28,7 @@
 
 
 	<script>
-		var MONTHS = ['Total Card Sale', 'Total Credit Sale', 'Total Cash Sale', 'Total Sale', 'Total Credit Purchase', 'Total Cash Purchase', 'Total Purchase', 'Total Deposit', 'Total Expense', 'Total Cash In'];
-		var color = Chart.helpers.color;
+
 		window.chartColors = {
 	red: 'rgb(255, 99, 132)',
 	orange: 'rgb(255, 159, 64)',
@@ -44,27 +43,18 @@
 		var randomColorGenerator = function () {
     return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
 };
-		var barChartData = {
-			labels: ['Total Card Sale', 'Total Credit Sale', 'Total Cash Sale', 'Total Sale', 'Total Credit Purchase', 'Total Cash Purchase', 'Total Purchase', 'Total Deposit', 'Total Expense', 'Total Cash In'],
-			datasets: [{
-				backgroundColor: ['green','green','green','green','red','orange','red','blue','red','green'],
-				borderColor: window.chartColors.grey,
-				borderWidth: 1,
-				data: {{ data }}
-			}]
 
-		};
-
+        console.log({{ chart_data|safe }})
 		window.onload = function() {
 			var ctx = document.getElementById('canvas').getContext('2d');
 			ctx.canvas.height = 90;
 			window.myBar = new Chart(ctx, {
 				type: 'bar',
-				data: barChartData,
+				data: {{ chart_data|safe }},
 				options: {
 					responsive: true,
 					legend: {
-						position: 'top',
+					    display:false
 					},
 					title: {
 						display: true,
@@ -75,69 +65,14 @@
 
 		};
 
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			var zero = Math.random() < 0.2 ? true : false;
-			barChartData.datasets.forEach(function(dataset) {
-				dataset.data = dataset.data.map(function() {
-					return zero ? 0.0 : randomScalingFactor();
-				});
 
-			});
-			window.myBar.update();
-		});
 
-		var colorNames = Object.keys(window.chartColors);
-		document.getElementById('addDataset').addEventListener('click', function() {
-			var colorName = colorNames[barChartData.datasets.length % colorNames.length];
-			var dsColor = window.chartColors[colorName];
-			var newDataset = {
-				label: 'Dataset ' + (barChartData.datasets.length + 1),
-				backgroundColor: color(dsColor).alpha(0.5).rgbString(),
-				borderColor: dsColor,
-				borderWidth: 1,
-				data: []
-			};
-
-			for (var index = 0; index < barChartData.labels.length; ++index) {
-				newDataset.data.push(randomScalingFactor());
-			}
-
-			barChartData.datasets.push(newDataset);
-			window.myBar.update();
-		});
-
-		document.getElementById('addData').addEventListener('click', function() {
-			if (barChartData.datasets.length > 0) {
-				var month = MONTHS[barChartData.labels.length % MONTHS.length];
-				barChartData.labels.push(month);
-
-				for (var index = 0; index < barChartData.datasets.length; ++index) {
-					// window.myBar.addData(randomScalingFactor(), index);
-					barChartData.datasets[index].data.push(randomScalingFactor());
-				}
-
-				window.myBar.update();
-			}
-		});
-
-		document.getElementById('removeDataset').addEventListener('click', function() {
-			barChartData.datasets.pop();
-			window.myBar.update();
-		});
-
-		document.getElementById('removeData').addEventListener('click', function() {
-			barChartData.labels.splice(-1, 1); // remove the label first
-
-			barChartData.datasets.forEach(function(dataset) {
-				dataset.data.pop();
-			});
-
-			window.myBar.update();
-		});
 	</script>
 
 <script>
     $('input[name="dates"]').daterangepicker({
+        startDate: moment().startOf('month'),
+        endDate: moment(),
          ranges: {
            'Today': [moment(), moment()],
            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -145,6 +80,7 @@
            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
            'This Month': [moment().startOf('month'), moment().endOf('month')],
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+
         }}
     );
      $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {

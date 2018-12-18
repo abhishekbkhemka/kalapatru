@@ -10,6 +10,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from LR.Serializers import DailyReportSerializer
+from django.db import connection
+
 
 def to_snake_case(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
@@ -35,24 +37,41 @@ class CheckEntryView(APIView):
 def chartView(request):
     context={}
     if request.method=="GET":
-        start_date=request.GET.get('start_date',datetime.strftime(datetime.today(),"%Y-%m-%d"))
+        start_date=request.GET.get('start_date',datetime.strftime(datetime.today().replace(day=1),"%Y-%m-%d"))
         end_date=request.GET.get('end_date',datetime.strftime(datetime.today(),"%Y-%m-%d"))
-        filterParams={}
-        filterParams["date__gte"] = start_date
-        filterParams["date__lte"] = end_date
+        where_clause = "date BETWEEN '%s' and '%s'" %(start_date,end_date)
         if request.GET.get("branch") and not request.GET.get("branch")=="All":
-            filterParams["branch_name"] =request.GET.get("branch")
-        data=DailyReport.objects.filter(**filterParams).aggregate(Sum("day_card_sale")
-        ,Sum("day_credit_sale"),Sum("day_cash_sale"),
-        Sum("total_credit_purchase"),Sum("total_cash_purchase"),
-        Sum("bank_deposit"),
-        Sum("total_expense"),
-        Sum("total_misc_cash_in")
-).values()
-        data.insert(3,sum(data[0:3]))
-        data.insert(6,sum(data[4:6]))
-        context['data']=data
-        context['branches'] = BRANCHES
+            where_clause += "and branch_name = %s"%(request.GET.get("branch",'').lower())
+        sql = """
+                select SUM(day_card_sale) as total_card_sale, SUM(day_credit_sale) as total_credit_sale, SUM(day_cash_sale) as total_cash_sale, SUM(day_card_sale+day_credit_sale+day_cash_sale) as total_sale,
+                SUM(total_credit_purchase) , SUM(total_cash_purchase) , SUM(total_cash_purchase+ total_credit_purchase) , SUM(bank_deposit),SUM(total_expense),SUM(total_misc_cash_in)
+                from kalptaru1.LR_dailyreport where %s
+       """ %(where_clause,)
+        try:
+
+            with connection.cursor() as cursor:
+                cursor.execute(sql)
+                data = cursor.fetchone()
+            # data.reverse()
+                data=list(data)
+                context['branches'] = BRANCHES
+                chart_data = {'labels':
+                                  ['Total Card Sale ('+str(data[0])+')',
+                                   'Total Credit Sale ('+str(data[1])+')',
+                                   'Total Cash Sale ('+str(data[2])+')',
+                                   'Total Sale ('+str(data[3])+')',
+                                   'Total Credit Purchase ('+str(data[4])+')',
+                                   'Total Cash Purchase ('+str(data[5])+')',
+                                   'Total Purchase ('+str(data[6])+')',
+                                   'Total Deposit ('+str(data[7])+')',
+                                   'Total Expense ('+str(data[8])+')',
+                                   'Total Cash In ('+str(data[9])+')'],
+                            'datasets': [{'backgroundColor':
+                                                ['green','green','green','green','red','orange','red','blue','red','green'],
+                            'data':data }]}
+                context['chart_data'] = chart_data
+        except Exception,e:
+            context['chart_data'] = {}
     return render(request,"chart.html",context)
 def dailyReportView(request):
     context={}
