@@ -45,10 +45,10 @@ def chartView(request):
         sql = """
                 select SUM(day_card_sale) as total_card_sale, SUM(day_credit_sale) as total_credit_sale, SUM(day_cash_sale) as total_cash_sale, SUM(day_card_sale+day_credit_sale+day_cash_sale) as total_sale,
                 SUM(total_credit_purchase) , SUM(total_cash_purchase) , SUM(total_cash_purchase+ total_credit_purchase) , SUM(bank_deposit),SUM(total_expense),SUM(total_misc_cash_in)
-                from kalptaru1.LR_dailyreport where %s
+                from LR_dailyreport where %s
        """ %(where_clause,)
         try:
-
+	    print sql
             with connection.cursor() as cursor:
                 cursor.execute(sql)
                 data = cursor.fetchone()
