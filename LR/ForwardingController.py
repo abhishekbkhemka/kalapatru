@@ -14,6 +14,8 @@ class ForwardingController():
         fn.billNo = params.get('billNo','')
         fn.billValues = params['billValues']
         fn.cases = params['cases']
+        fn.regularCases = params['regularCases']
+        fn.bigCases = params['bigCases']
         fn.transporter_id = params['transporter_id']
         fn.transporterStation = params['transporterStation']
         # if 'transporter_id' in params:

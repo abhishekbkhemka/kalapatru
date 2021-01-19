@@ -145,6 +145,8 @@ class ForwardingNote(models.Model):
     billNo = models.CharField(max_length=250,blank=True,null=True)
     billValues = models.CharField(max_length=250,blank=True,null=True)
     cases = models.CharField(max_length=250,blank=True,null=True)
+    regularCases = models.CharField(max_length=250,blank=True,null=True)
+    bigCases = models.CharField(max_length=250,blank=True,null=True)
     marka = models.CharField(max_length=250,blank=True,null=True)
     permitNo = models.CharField(max_length=250,blank=True,null=True)
     consignor = models.ForeignKey(Consignor,blank=True,null=True)
