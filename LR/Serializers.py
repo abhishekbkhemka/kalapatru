@@ -18,7 +18,10 @@ class TransporterSerializer(serializers.ModelSerializer):
         fields = ('stations','label','id','name','contactNumber','contactPerson','isActive','addressLine1','addressLine2','area','city','state','country')
         depth = 1
 
-
+class TransporterMinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transporter
+        fields = ('label','id','name','contactNumber','contactPerson','isActive','addressLine1','addressLine2','area','city','state','country')
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,10 +41,10 @@ class ForwardingSerializer(serializers.ModelSerializer):
     customer = CustomerSerializer()
     class Meta:
         model = ForwardingNote
-        fields = ('transporterStation','company','id','billDates','transporter','fnDate','customer','createdDate','billNo','billValues','cases','bigCases','regularCases','marka','permitNo','consignor','commodity','isDispatched')
+        fields = ('transporterStation','company','id','billDates','fnDate','transporter','customer','createdDate','billNo','billValues','cases','bigCases','regularCases','marka','permitNo','consignor','commodity','isDispatched')
 
 class ForwardingDetailSerializer(serializers.ModelSerializer):
-    transporter = TransporterSerializer()
+    transporter = TransporterMinSerializer()
     customer = CustomerSerializer()
     company =CompanySerializer()
     class Meta:
