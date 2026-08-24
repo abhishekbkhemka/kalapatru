@@ -62,8 +62,8 @@ admin.site.register(Commodity)
 
 class Stock(models.Model):
     type=models.CharField(max_length=250,choices=CHOICES)
-    company=models.ForeignKey(Company)
-    address=models.ForeignKey(Address)
+    company=models.ForeignKey(Company, on_delete=models.CASCADE)
+    address=models.ForeignKey(Address, on_delete=models.CASCADE)
     bill_No=models.CharField(max_length=250,null=True,blank=True)
     bill_Date=models.DateField(null=True,blank=True)
     bill_Rec_Date=models.DateField(null=True,blank=True)
@@ -80,7 +80,7 @@ class Stock(models.Model):
     qrt = models.CharField(max_length=250, null=True, blank=True)
     year = models.CharField(max_length=250, null=True, blank=True)
     remarks = models.CharField(max_length=250, null=True, blank=True)
-    commodity = models.ForeignKey(Commodity)
+    commodity = models.ForeignKey(Commodity, on_delete=models.CASCADE)
 
 
     def __str__(self):

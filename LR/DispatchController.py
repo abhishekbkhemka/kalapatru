@@ -3,7 +3,7 @@ from LR.models import Dispatch,ForwardingNote
 from LR.utils import getServerDateFromStr,timeout
 from rest_framework.exceptions import PermissionDenied
 from django.db import connection
-from utils import dictfetchall
+from LR.utils import dictfetchall
 
 class DispatchController():
     def lockDispatch(self,dispatch):

@@ -1,0 +1,74 @@
+# =============================================================================
+# PRODUCTION / STAGING compose — NEW server only (Linode, etc.)
+# =============================================================================
+# Does NOT load laptop .env or current production RDS.
+#
+#   cp .env.production.example .env.production
+#   # edit — NEW DB URL, secrets, hosts
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# Optional MySQL on the same VPS:
+#   docker compose -f docker-compose.prod.yml --profile with-db \
+#     --env-file .env.production up -d --build
+#
+# Local daily work: use docker-compose.yml (unchanged).
+# =============================================================================
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: kalapatru-api:prod
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      DEBUG: "False"
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - kalapatru_prod_media:/app/media
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+  web:
+    build:
+      context: ../kalapatru-fe
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    image: kalapatru-web:prod
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-80}:80"
+
+  db:
+    profiles: ["with-db"]
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-kalapatru_staging}
+      MYSQL_USER: ${MYSQL_USER:-kalapatru}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env.production}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env.production}
+    volumes:
+      - kalapatru_prod_mysql:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  kalapatru_prod_media:
+  kalapatru_prod_mysql:

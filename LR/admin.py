@@ -1,4 +1,4 @@
 from django.contrib import admin
-from models import DailyReport
-# Register your models here.
+from LR.models import DailyReport
+
 admin.site.register(DailyReport)

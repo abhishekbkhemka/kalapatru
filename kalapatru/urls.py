@@ -1,36 +1,33 @@
-from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from LR.views import transporters,customers,forwardingNote,forwardingNotes,settings,dispatch,dispatches,vans
-from LR.dailyreport import dailyReportView,chartView
-from model_report.urls import *
-from model_report import report
-from stock.views import stock,upload
-from LR.dailyreport import CheckEntryView
-report.autodiscover()
-admin.autodiscover()
-print admin.site.urls
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'kalapatru.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 
-
-    # url(r'', include('model_report.urls')),
-
-
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/transporters/$', transporters),
-    url(r'^api/forwardingNote/$', forwardingNote),
-    url(r'^api/customers/$', customers),
-    url(r'^api/settings/$', settings),
-    url(r'^api/forwardingNotes/$', forwardingNotes),
-    url(r'^api/dispatch/$', dispatch),
-    url(r'^api/dispatches/$', dispatches),
-    url(r'^api/vans/$', vans),
-    url(r'^report/', include('model_report.urls')),
-    url(r'^stock/$', stock),
-    url(r'^stock/upload/$', upload),
-    url(r'^dailyreport/$', dailyReportView),
-    url(r'^dailyreport/chart/$', chartView),
-    url(r'^dailyreport/check/$', CheckEntryView.as_view()),
+from kalapatru.views import home
+from LR.views import (
+    transporters,
+    customers,
+    forwardingNote,
+    forwardingNotes,
+    settings as api_settings,
+    dispatch,
+    dispatches,
+    vans,
 )
+
+urlpatterns = [
+    path('', home, name='home'),
+    path('admin/', admin.site.urls),
+    path('api/auth/', include('accounts.urls')),
+    path('api/transporters/', transporters),
+    path('api/forwardingNote/', forwardingNote),
+    path('api/customers/', customers),
+    path('api/settings/', api_settings),
+    path('api/forwardingNotes/', forwardingNotes),
+    path('api/dispatch/', dispatch),
+    path('api/dispatches/', dispatches),
+    path('api/vans/', vans),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

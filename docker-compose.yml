@@ -1,0 +1,66 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: kalapatru-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: kalptaru1
+      MYSQL_USER: kalapatru
+      MYSQL_PASSWORD: kalapatru
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - kalapatru_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kalapatru-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    # Explicit local DB only — never inherits host .env RDS URL
+    environment:
+      DATABASES_URL: mysql://kalapatru:kalapatru@db:3306/kalptaru1
+      SECRET_KEY: local-docker-dev-secret-not-for-prod
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      CORS_ALLOWED_ORIGINS: http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
+      BOOTSTRAP_ADMIN_USER: admin
+      BOOTSTRAP_ADMIN_PASSWORD: admin123
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: ["sh", "/app/docker/entrypoint.sh"]
+
+  web:
+    build:
+      context: ../kalapatru-fe
+      dockerfile: Dockerfile
+    container_name: kalapatru-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      # Browser calls host-mapped API, not the Docker service name
+      VITE_API_BASE_URL: http://127.0.0.1:8000
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../kalapatru-fe:/app
+      - kalapatru_web_node_modules:/app/node_modules
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+
+volumes:
+  kalapatru_mysql_data:
+  kalapatru_web_node_modules:

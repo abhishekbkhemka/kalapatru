@@ -42,4 +42,4 @@ def validate_json(value):
     try:
         json.loads(value)
     except:
-        raise ValidationError(u'%s is not an Valid Json - ' % value)
+        raise ValidationError('%s is not an Valid Json - ' % value)
