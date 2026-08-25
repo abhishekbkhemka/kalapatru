@@ -1,64 +1,174 @@
 from rest_framework import serializers
-from LR.models import Transporter,Customer,ForwardingNote,Dispatch,Station,Company,Commodity
+from LR.models import (
+    Transporter,
+    Customer,
+    ForwardingNote,
+    Dispatch,
+    Station,
+    Company,
+    Commodity,
+    DailyReport,
+)
 
-from LR.models import DailyReport
 
 class CommoditySeializers(serializers.ModelSerializer):
     class Meta:
         model = Commodity
-        fields = ('name','label')
+        fields = ('name', 'label')
+
 
 class StationsSeializers(serializers.ModelSerializer):
     class Meta:
         model = Station
         fields = ('label',)
+
+
 class TransporterSerializer(serializers.ModelSerializer):
+    stations = StationsSeializers(many=True, read_only=True)
+
     class Meta:
         model = Transporter
-        fields = ('stations','label','id','name','contactNumber','contactPerson','isActive','addressLine1','addressLine2','area','city','state','country')
-        depth = 1
+        fields = (
+            'stations',
+            'label',
+            'id',
+            'name',
+            'contactNumber',
+            'contactPerson',
+            'isActive',
+            'addressLine1',
+            'addressLine2',
+            'area',
+            'city',
+            'state',
+            'country',
+        )
+
 
 class TransporterMinSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transporter
-        fields = ('label','id','name','contactNumber','contactPerson','isActive','addressLine1','addressLine2','area','city','state','country')
+        fields = (
+            'label',
+            'id',
+            'name',
+            'contactNumber',
+            'contactPerson',
+            'isActive',
+            'addressLine1',
+            'addressLine2',
+            'area',
+            'city',
+            'state',
+            'country',
+        )
+
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('id','name','code','addressLine1','addressLine2','area','city','state','country','vat','cst_or_tin')
+        fields = (
+            'id',
+            'name',
+            'code',
+            'addressLine1',
+            'addressLine2',
+            'area',
+            'city',
+            'state',
+            'country',
+            'vat',
+            'cst_or_tin',
+        )
 
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ('label','id','name','org','contactPerson','contactNumber','isActive','addressLine1','addressLine2','area','city','state','country')
+        fields = (
+            'label',
+            'id',
+            'name',
+            'org',
+            'contactPerson',
+            'contactNumber',
+            'isActive',
+            'addressLine1',
+            'addressLine2',
+            'area',
+            'city',
+            'state',
+            'country',
+        )
 
 
 class ForwardingSerializer(serializers.ModelSerializer):
-    company =CompanySerializer()
+    company = CompanySerializer()
     transporter = TransporterSerializer()
     customer = CustomerSerializer()
+
     class Meta:
         model = ForwardingNote
-        fields = ('transporterStation','company','id','billDates','fnDate','transporter','customer','createdDate','billNo','billValues','cases','bigCases','regularCases','marka','permitNo','consignor','commodity','isDispatched')
+        fields = (
+            'transporterStation',
+            'company',
+            'id',
+            'billDates',
+            'fnDate',
+            'transporter',
+            'customer',
+            'createdDate',
+            'billNo',
+            'billValues',
+            'cases',
+            'bigCases',
+            'regularCases',
+            'marka',
+            'permitNo',
+            'consignor',
+            'commodity',
+            'isDispatched',
+        )
+
 
 class ForwardingDetailSerializer(serializers.ModelSerializer):
     transporter = TransporterMinSerializer()
     customer = CustomerSerializer()
-    company =CompanySerializer()
+    company = CompanySerializer()
+
     class Meta:
         model = ForwardingNote
-        fields = ('transporterStation','company','fnDate','id','billDates','transporter','customer','createdDate','billNo','billValues','cases','regularCases','bigCases','marka','permitNo','consignor','commodity','isDispatched')
+        fields = (
+            'transporterStation',
+            'company',
+            'fnDate',
+            'id',
+            'billDates',
+            'transporter',
+            'customer',
+            'createdDate',
+            'billNo',
+            'billValues',
+            'cases',
+            'regularCases',
+            'bigCases',
+            'marka',
+            'permitNo',
+            'consignor',
+            'commodity',
+            'isDispatched',
+        )
 
 
 class DispatchSerializer(serializers.ModelSerializer):
     forwardingNote = ForwardingDetailSerializer(many=True)
+
     class Meta:
         model = Dispatch
-        fields = ('id','date','vanNo','name','remarks','forwardingNote','isLocked')
+        fields = ('id', 'date', 'vanNo', 'name', 'remarks', 'forwardingNote', 'isLocked')
+
+
 class DailyReportSerializer(serializers.ModelSerializer):
     class Meta:
-        model=DailyReport
-        fields="__all__"
-
+        model = DailyReport
+        fields = '__all__'

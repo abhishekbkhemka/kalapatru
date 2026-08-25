@@ -98,7 +98,11 @@ _db_url = (
     or DEFAULT_DATABASE_URL
 )
 DATABASES = {
-    'default': dj_database_url.parse(_db_url, conn_max_age=600),
+    'default': dj_database_url.parse(
+        _db_url,
+        conn_max_age=600,
+        conn_health_checks=True,
+    ),
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -158,7 +162,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': False,
-    'UPDATE_LAST_LOGIN': True,
+    # Avoid an extra DB write on every login token issue
+    'UPDATE_LAST_LOGIN': False,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
